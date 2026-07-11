@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Energetic Edge — The 90-Day Founder Energy Transformation</title>
+<style>
+  :root {
+    --bg: #14120f;
+    --bg-alt: #1b1815;
+    --panel: #201c18;
+    --line: #332e28;
+    --text: #ece7dd;
+    --text-dim: #a89e8f;
+    --accent: #d98b3f;
+    --accent-dim: #8a5a29;
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.hero {
+    padding: 110px 0 90px;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(217,139,63,0.12), transparent 60%),
+      var(--bg);
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5.5vw, 54px);
+    line-height: 1.12;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .subhead {
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 36px;
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--text);
+    max-width: 620px;
+  }
+
+  .lede p { margin-bottom: 16px; }
+  .lede p:last-child { margin-bottom: 0; }
+
+  .cta {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 15px 32px;
+    background: var(--accent);
+    color: #14120f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 3px;
+    letter-spacing: 0.01em;
+    transition: background 0.15s ease;
+  }
+  .cta:hover { background: #e59a4f; }
+
+  .cta-secondary {
+    display: inline-block;
+    margin-top: 40px;
+    margin-left: 16px;
+    padding: 15px 28px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .cta-secondary:hover { border-color: var(--accent-dim); }
+
+  section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 400;
+    margin-bottom: 26px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  p { color: var(--text); margin-bottom: 16px; max-width: 640px; }
+  p:last-child { margin-bottom: 0; }
+
+  .dim { color: var(--text-dim); }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 600px) {
+    .pillars { grid-template-columns: 1fr; }
+  }
+
+  .pillar-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 26px;
+  }
+
+  .simpler-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .simpler-chip {
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 20px;
+  }
+
+  .simpler-chip.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  ul.check {
+    list-style: none;
+    margin-top: 24px;
+  }
+
+  ul.check li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 14px;
+    max-width: 620px;
+    color: var(--text);
+  }
+
+  ul.check li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .quote {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-style: italic;
+    color: var(--text);
+    border-left: 2px solid var(--accent);
+    padding-left: 24px;
+    margin: 28px 0;
+    max-width: 600px;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .split { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .stat-block {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 28px;
+    margin-top: 28px;
+  }
+
+  .stat-block .num {
+    font-family: var(--serif);
+    font-size: 40px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  footer {
+    padding: 60px 0 80px;
+    text-align: center;
+  }
+
+  footer .cta { margin-top: 0; }
+
+  footer .fine {
+    margin-top: 28px;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">The Energetic Edge</div>
+      <h1>The 90-Day Founder Energy Transformation</h1>
+      <div class="subhead">Strong body. Calm mind. Better decisions.</div>
+      <div class="lede">
+        <p>You built the business. Somewhere along the way, it started running you.</p>
+        <p>On paper you're doing well. Real revenue, a team, customers who rate you. Off paper it's a different picture. The phone never switches off. Holidays get cancelled, or you take them and spend the whole week half-there. You're stuck in details that shouldn't need you, micromanaging work you should have handed off years ago. The emotions you swallow at work leak out sideways at home. At the kids. At your partner. At some poor sod in traffic.</p>
+        <p>You're not lazy. You're not losing your edge. You're dysregulated. And that's fixable.</p>
+      </div>
+      <a href="#contact" class="cta">Book a call</a>
+      <a href="#how" class="cta-secondary">See how it works</a>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <h2>Stay in your head and you're dead</h2>
+      <p>Every founder coach wants to fix this with mindset. More journalling, more affirmations, another framework for your thoughts. Cognitive work only gets you so far. The body and mind are one linked system, and if the body is running on stress, no amount of thinking sorts it out.</p>
+      <p>So we start with the body. Then we re-pattern the mind. Then we wrap the whole thing in a structure that holds when life gets loud again.</p>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p>The whole programme runs on <strong>SIMPLER</strong>, the operating system I built to recover from my own burnout and have refined with founders since. Seven pillars: Structure, Intention, Move, Presence, Let Go, Enrich, Recharge.</p>
+
+      <div class="simpler-row">
+        <span class="simpler-chip">Structure</span>
+        <span class="simpler-chip">Intention</span>
+        <span class="simpler-chip active">Move</span>
+        <span class="simpler-chip">Presence</span>
+        <span class="simpler-chip active">Let Go</span>
+        <span class="simpler-chip">Enrich</span>
+        <span class="simpler-chip">Recharge</span>
+      </div>
+
+      <p style="margin-top:28px;">Two of those pillars do the heavy lifting.</p>
+
+      <div class="pillars">
+        <div class="pillar-card">
+          <h3>Move</h3>
+          <p>The body work. The Four Pillar Energy System: Aerobic, Strength, Mobility, Breathwork. Built around your actual life, not a fantasy version of it. This is where your energy gets rebuilt from the ground up.</p>
+        </div>
+        <div class="pillar-card">
+          <h3>Let Go</h3>
+          <p>The mind work. The STORY model re-patterns the behaviour that got you here. Something happened, you told yourself what it meant, and you've been running that story ever since. It's why you can't delegate, can't switch off, can't stop proving yourself. We find the story and we change it.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:28px;">The other pillars — Structure, Intention, Presence, Enrich and Recharge — complete the wrapper. They're what makes this stick after the 90 days end.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>What you get</h2>
+      <p class="dim">Ninety days, one to one, with me.</p>
+
+      <ul class="check">
+        <li><strong>Day one:</strong> your SIMPLER score out of 70. Some founders score negative. One client started at minus 1; six weeks later he was at 45. That number is your before photo, and every week we watch it move.</li>
+        <li><strong>Night one:</strong> the Switch-Off Protocol, a 10-minute nervous system reset you use that same evening. The programme pays something back before you've finished your first week.</li>
+        <li>Weekly Zoom sessions, just us.</li>
+        <li>WhatsApp access with answers inside 24 hours, usually under 2.</li>
+        <li>Meal plans that arrive done, not as homework.</li>
+        <li>A daily commitment of 15 minutes. This doesn't add to your load — its whole job is subtraction.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>The Day-30 Checkpoint</h2>
+      <div class="stat-block">
+        <div class="num">Day 30</div>
+        <p>We re-measure your SIMPLER score. If it hasn't moved, we don't pretend it has. We find what's in the way and adjust until it does. You'll never wonder whether this is working, because we're measuring it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>What actually changes</h2>
+      <p>You reconnect with your body through the Four Pillars. STORY re-patterns the behaviour that got you here. You switch off properly, maybe for the first time in years. Decisions get bigger and calmer, and that shows up in the bottom line. You let go of work that was never yours, and your team gets better because of it. And you keep the whole operating system for good — it lives in your business after the 90 days end.</p>
+
+      <div class="quote">"One client rebuilt her relationship with her son during the programme. That same shift changed how she ran her team meetings, and the meetings drove profit. That's what energy is revenue looks like in real life."</div>
+
+      <p>The real prize is simpler than any of that. You start looking forward to time with your family again. Not tolerating it. Looking forward to it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <h3>Who this is for</h3>
+          <p>Founders and business owners doing £500k to £5m, roughly 35 to 55, who built the business and lost themselves inside it. Kids at one end, ageing parents at the other, a relationship carrying more strain than anyone outside can see. You know something has to change. You suspect the problem isn't strategy. It's you. You're right, and it's fixable.</p>
+        </div>
+        <div>
+          <h3>Who it's not for</h3>
+          <p>If you're after productivity hacks or motivation content, this isn't it. If you're certain the problem is your team, your market or your cashflow, the work never engages. And if what you need is clinical support for active depression or trauma, you need a professional, not a performance coach, and I'll tell you that straight and point you in the right direction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Why me</h2>
+      <p>I ran a construction business for 12 years and it nearly finished me. Burnout took the business, a 30-year relationship and the house. I rebuilt from nothing, and SIMPLER is what I built to do it. I'm a qualified coach, NLP Trainer and Breathwork Facilitator. Runner, triathlete, kettlebell enthusiast, yoga teacher in training.</p>
+      <p>Most founder coaches are all mindset. Most trainers have never read a P&amp;L. I do both, and I've lived the collapse you're trying to avoid.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>The investment</h2>
+      <p>This is a 90-day, one-to-one commitment, and it's priced like one. We'll talk numbers on the call, once we both know it's the right fit. What I'll say here is this: you already know what running on empty is costing you. The missed decisions, the delayed ones, the hours lost to fog, the strain at home. This costs less than another year of that.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="wrap">
+      <h2>Ready to talk?</h2>
+      <p class="dim">Book a call and let's find out if it's the right fit.</p>
+      <a href="mailto:wildwildwesty2@gmail.com?subject=90-Day%20Founder%20Energy%20Transformation" class="cta">Book a call</a>
+      <div class="fine">The Energetic Edge</div>
+    </div>
+  </footer>
+
+</body>
+</html>

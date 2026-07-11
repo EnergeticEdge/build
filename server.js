@@ -1,17 +1,10 @@
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
 const port = process.env.PORT || 3000;
-
-const html = `<!DOCTYPE html>
-<html>
-<head><title>EE Build</title></head>
-<body>
-  <h1>EE Build is live!</h1>
-  <a href="https://www.google.com">
-    <button>Go to Google</button>
-  </a>
-</body>
-</html>`;
+const indexPath = path.join(__dirname, 'public', 'index.html');
+const html = fs.readFileSync(indexPath, 'utf8');
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' });
