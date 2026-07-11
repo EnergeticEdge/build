@@ -4,17 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Energetic Edge — The 90-Day Founder Energy Transformation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #14120f;
-    --bg-alt: #1b1815;
-    --panel: #201c18;
-    --line: #332e28;
-    --text: #ece7dd;
-    --text-dim: #a89e8f;
-    --accent: #d98b3f;
-    --accent-dim: #8a5a29;
-    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --navy: #0b3a6a;
+    --navy-deep: #082a4e;
+    --navy-dim: #4f7396;
+    --orange: #ff6a00;
+    --white: #ffffff;
+    --bg: #ffffff;
+    --bg-alt: #f3f6f9;
+    --panel: #f3f6f9;
+    --line: #dbe3ea;
+    --text: #10233b;
+    --text-dim: #4f7396;
+    --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   }
 
@@ -36,29 +42,35 @@
     padding: 0 24px;
   }
 
-  header.hero {
-    padding: 110px 0 90px;
-    border-bottom: 1px solid var(--line);
-    background:
-      radial-gradient(ellipse at 50% -10%, rgba(217,139,63,0.12), transparent 60%),
-      var(--bg);
+  .marque {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
   }
 
-  .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 22px;
+  .marque svg { display: block; }
+
+  .wordmark {
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--navy);
+  }
+
+  header.hero {
+    padding: 90px 0 80px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
   }
 
   h1 {
-    font-family: var(--serif);
-    font-size: clamp(34px, 5.5vw, 54px);
-    line-height: 1.12;
+    font-family: var(--display);
+    font-size: clamp(40px, 6.5vw, 64px);
+    line-height: 1.05;
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
+    color: var(--navy);
     margin-bottom: 20px;
   }
 
@@ -81,30 +93,30 @@
     display: inline-block;
     margin-top: 40px;
     padding: 15px 32px;
-    background: var(--accent);
-    color: #14120f;
+    background: var(--orange);
+    color: var(--navy-deep);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 15px;
     border-radius: 3px;
     letter-spacing: 0.01em;
     transition: background 0.15s ease;
   }
-  .cta:hover { background: #e59a4f; }
+  .cta:hover { background: #ff7c1f; }
 
   .cta-secondary {
     display: inline-block;
     margin-top: 40px;
     margin-left: 16px;
     padding: 15px 28px;
-    color: var(--text);
+    color: var(--navy);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 15px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--navy);
     border-radius: 3px;
   }
-  .cta-secondary:hover { border-color: var(--accent-dim); }
+  .cta-secondary:hover { background: var(--bg-alt); }
 
   section {
     padding: 72px 0;
@@ -114,18 +126,20 @@
   section:last-of-type { border-bottom: none; }
 
   h2 {
-    font-family: var(--serif);
-    font-size: clamp(26px, 4vw, 34px);
+    font-family: var(--display);
+    font-size: clamp(30px, 4.5vw, 40px);
     font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--navy);
     margin-bottom: 26px;
-    letter-spacing: -0.01em;
   }
 
   h3 {
-    font-family: var(--serif);
-    font-size: 20px;
+    font-family: var(--display);
+    font-size: 22px;
     font-weight: 400;
-    color: var(--accent);
+    letter-spacing: 0.01em;
+    color: var(--orange);
     margin-bottom: 10px;
   }
 
@@ -148,7 +162,8 @@
   .pillar-card {
     background: var(--panel);
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-left: 3px solid var(--orange);
+    border-radius: 4px;
     padding: 26px;
   }
 
@@ -162,14 +177,17 @@
   .simpler-chip {
     border: 1px solid var(--line);
     color: var(--text-dim);
-    font-size: 13px;
-    padding: 7px 14px;
+    font-family: var(--display);
+    letter-spacing: 0.03em;
+    font-size: 14px;
+    padding: 6px 16px;
     border-radius: 20px;
   }
 
   .simpler-chip.active {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--orange);
+    color: var(--orange);
+    background: #fff4ec;
   }
 
   ul.check {
@@ -189,15 +207,14 @@
     content: "—";
     position: absolute;
     left: 0;
-    color: var(--accent);
+    color: var(--orange);
   }
 
   .quote {
-    font-family: var(--serif);
-    font-size: 21px;
+    font-size: 19px;
     font-style: italic;
-    color: var(--text);
-    border-left: 2px solid var(--accent);
+    color: var(--navy);
+    border-left: 3px solid var(--orange);
     padding-left: 24px;
     margin: 28px 0;
     max-width: 600px;
@@ -217,40 +234,68 @@
   .stat-block {
     background: var(--panel);
     border: 1px solid var(--line);
-    border-radius: 6px;
+    border-left: 3px solid var(--orange);
+    border-radius: 4px;
     padding: 28px;
     margin-top: 28px;
   }
 
   .stat-block .num {
-    font-family: var(--serif);
-    font-size: 40px;
-    color: var(--accent);
+    font-family: var(--display);
+    font-size: 44px;
+    letter-spacing: 0.02em;
+    color: var(--orange);
     line-height: 1;
     margin-bottom: 8px;
   }
 
-  footer {
-    padding: 60px 0 80px;
+  .tagline-bar {
+    background: var(--navy);
+    padding: 46px 0;
     text-align: center;
   }
 
-  footer .cta { margin-top: 0; }
+  .tagline-bar .wrap { padding: 0 24px; }
 
-  footer .fine {
-    margin-top: 28px;
-    color: var(--text-dim);
-    font-size: 13px;
+  .tagline-bar p {
+    color: var(--white);
+    font-family: var(--display);
+    font-size: clamp(20px, 3.4vw, 28px);
+    letter-spacing: 0.03em;
+    margin: 0;
+    max-width: none;
   }
 
-  a { color: var(--accent); }
+  .tagline-bar p span { color: var(--orange); }
+
+  footer {
+    background: var(--navy-deep);
+    padding: 64px 0 56px;
+    text-align: center;
+  }
+
+  footer h2 { color: var(--white); }
+  footer .dim { color: #a9c0d6; }
+
+  footer .cta { margin-top: 28px; }
+
+  footer .marque { margin-top: 36px; margin-bottom: 0; justify-content: center; }
+  footer .wordmark { color: var(--white); }
+
+  a { color: var(--orange); }
 </style>
 </head>
 <body>
 
   <header class="hero">
     <div class="wrap">
-      <div class="eyebrow">The Energetic Edge</div>
+      <div class="marque">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 14L16 2V11L26 5L14 26V17L2 22.5V14Z" fill="#0b3a6a"/>
+          <path d="M16 11L26 5L14 26V17L20 13.5L16 15.5V11Z" fill="#ff6a00"/>
+        </svg>
+        <span class="wordmark">THE ENERGETIC EDGE</span>
+      </div>
       <h1>The 90-Day Founder Energy Transformation</h1>
       <div class="subhead">Strong body. Calm mind. Better decisions.</div>
       <div class="lede">
@@ -340,6 +385,12 @@
     </div>
   </section>
 
+  <div class="tagline-bar">
+    <div class="wrap">
+      <p>ENERGY IS <span>REVENUE</span>. FOCUS IS <span>PROFIT</span>.</p>
+    </div>
+  </div>
+
   <section>
     <div class="wrap">
       <div class="split">
@@ -375,7 +426,13 @@
       <h2>Ready to talk?</h2>
       <p class="dim">Book a call and let's find out if it's the right fit.</p>
       <a href="mailto:wildwildwesty2@gmail.com?subject=90-Day%20Founder%20Energy%20Transformation" class="cta">Book a call</a>
-      <div class="fine">The Energetic Edge</div>
+      <div class="marque">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 14L16 2V11L26 5L14 26V17L2 22.5V14Z" fill="#ffffff"/>
+          <path d="M16 11L26 5L14 26V17L20 13.5L16 15.5V11Z" fill="#ff6a00"/>
+        </svg>
+        <span class="wordmark">THE ENERGETIC EDGE</span>
+      </div>
     </div>
   </footer>
 
