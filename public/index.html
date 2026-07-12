@@ -718,6 +718,27 @@
   // Keith: sign up at formspree.io, create a form, and paste your endpoint here.
   var FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
+  /* Orphan prevention: join the last two words of each block with a non-breaking space
+     so a single word never sits alone on the last line. */
+  function preventOrphans(root) {
+    var selector = 'h1, h2, h3, p, .kicker, .subline, .subline-plain, .pull-line, .tagline, .edge-label, .accordion-trigger-text, .modal-intro, .fine-print, .form-status';
+    (root || document).querySelectorAll(selector).forEach(function (el) {
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+      var lastTextNode = null;
+      var node;
+      while ((node = walker.nextNode())) {
+        if (node.textContent.trim().length) lastTextNode = node;
+      }
+      if (!lastTextNode) return;
+      var text = lastTextNode.textContent;
+      var lastSpaceIndex = text.lastIndexOf(' ');
+      if (lastSpaceIndex === -1 || lastSpaceIndex === text.length - 1) return;
+      lastTextNode.textContent = text.slice(0, lastSpaceIndex) + ' ' + text.slice(lastSpaceIndex + 1);
+    });
+  }
+
+  preventOrphans();
+
   /* Accordions: one open at a time, per group */
   document.querySelectorAll('.accordion-group').forEach(function (group) {
     var triggers = group.querySelectorAll('.accordion-trigger');
@@ -869,6 +890,7 @@
           '<h2>Got it.</h2>' +
           '<p>I read every application myself, and if it looks like a fit you\'ll hear from me within two working days. In the meantime, guard your evenings.</p>' +
           '</div>';
+        preventOrphans(modalBody);
       } else {
         throw new Error('send failed');
       }
@@ -876,6 +898,7 @@
       submitBtn.disabled = false;
       statusEl.classList.add('error');
       statusEl.textContent = 'That didn\'t send. Try again, or email me directly at ' + APPLICATION_EMAIL + '.';
+      preventOrphans(statusEl.parentElement);
     });
   });
 })();
