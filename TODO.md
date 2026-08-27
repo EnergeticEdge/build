@@ -2,8 +2,20 @@
 
 ## Status
 
-- **PR #1** (initial build) and **PR #2** (Beehiiv fix + scoring redesign) merged and deployed.
-  Live at `https://build-production-f884.up.railway.app` (custom domain not yet attached).
+- **PR #1, #2, #3** merged and deployed. Live at
+  `https://build-production-f884.up.railway.app` (custom domain not yet attached).
+- **Real logo files are in** (`public/assets/logo-side.svg`, `logo-below.svg`, `marque.svg`, plus
+  `-white` variants used in every header since all three pages sit on the navy background). No
+  more text-wordmark placeholder. One thing worth knowing: the actual artwork uses navy `#004174`
+  and orange `#ff720f`, not the `#0b3a6a` / `#ff6a00` from the brand overview doc — close but not
+  identical. Left the rest of the app on the documented palette rather than recolouring everything
+  off a few-point difference; flag if you want it reconciled one way or the other.
+- **Results page simplified further**: dropped the Energy/Focus insight cards entirely (just the
+  state now, no area breakdown). The quadrant is back to an even, symmetric grid now that nothing
+  is plotted by exact position, and the 4 headlines are Keith's actual words for each state (one
+  per state now, not banded by score). Fog's paragraph and the Two Edges section both used to say
+  "You haven't lost your edge, you've lost access to it," so the Two Edges section skips that line
+  for Fog specifically now, no other state affected.
 - **Edge threshold**: Edge now needs 70%+ on both Energy and Focus, not just above the 50%
   midpoint, so a middling result doesn't read as the best possible outcome. Other three states
   unchanged.
@@ -50,9 +62,9 @@ No literal `founder-energy-quiz-funnel-design.md` was ever supplied. This build 
 - An early static HTML prototype of the quiz (visual style reference only — its scoring model
   was not used).
 
-Because of that, every question, headline, insight and email is copy written to fit the spec and
-voice rules, not transcribed from an existing doc. Read it before it goes live, particularly the
-12 headlines and 6 insight blocks in `lib/quizData.js`.
+Because of that, every question and email is copy written to fit the spec and voice rules, not
+transcribed from an existing doc — except the 4 state descriptions in `HEADLINES`
+(`lib/quizData.js`), which are Keith's own words, supplied directly and used verbatim.
 
 **Edge state framing:** `brand-device-two-edges.md` and the ICP doc both describe Edge as
 "performing well but closer to the line than he thinks." Keith confirmed in this build session
@@ -61,10 +73,7 @@ as something to celebrate and build on, never as a warning.
 
 ## Real placeholders to fill in
 
-1. **Logo files.** `TEELogoSide250px.png`, `TEELogoBelow250px.png`, `TEEmarque250px.png` were
-   never supplied. `components/Logo.js` is a text wordmark placeholder using the existing
-   `public/favicon.svg` marque shape.
-2. **Landing page credibility stat** (`app/page.js`, Credibility section). Currently a visible
+1. **Landing page credibility stat** (`app/page.js`, Credibility section). Currently a visible
    bracketed placeholder.
 3. **Four state videos** (Edge / Frantic / Fog / Blocked). `lib/config.js` → `STATE_VIDEOS` is
    `null` for all four. The results page shows a labelled placeholder box until set.

@@ -1,18 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getLead } from '@/lib/db';
-import { computeScores, scoreBand, areaBand } from '@/lib/scoring';
-import {
-  HEADLINES,
-  AREA_INSIGHTS,
-  AREA_LABELS,
-  STATE_LABELS,
-  TWO_EDGES_COPY,
-  CONTACT_COPY,
-  SHARE_COPY,
-} from '@/lib/quizData';
+import { computeScores } from '@/lib/scoring';
+import { HEADLINES, STATES, STATE_LABELS, TWO_EDGES_COPY, CONTACT_COPY, SHARE_COPY } from '@/lib/quizData';
 import { STATE_VIDEOS, SITE_URL } from '@/lib/config';
 import Logo from '@/components/Logo';
-import InsightCard from '@/components/results/InsightCard';
 import NextSteps from '@/components/results/NextSteps';
 import ShareButton from '@/components/results/ShareButton';
 import Quadrant from '@/components/results/Quadrant';
@@ -29,13 +20,10 @@ export default async function ResultsPage({ params }) {
 
   const scores = computeScores(lead.answers);
   const state = scores.state;
-  const band = scoreBand(scores.totalPct);
-  const headline = HEADLINES[state]?.[band] || '';
+  const headline = HEADLINES[state] || '';
   const stateLabel = STATE_LABELS[state] || state;
   const videoUrl = STATE_VIDEOS[state];
   const resultsUrl = `${SITE_URL}/results/${id}`;
-
-  const areaOrder = ['energy', 'focus'];
 
   return (
     <main className="min-h-screen">
@@ -50,11 +38,14 @@ export default async function ResultsPage({ params }) {
             {lead.first_name}, here's where you're operating from
           </p>
           <h1 className="mt-5 text-4xl sm:text-5xl">{stateLabel}</h1>
-          <p className="mt-4 text-base sm:text-lg text-navy-600 max-w-[50ch] mx-auto">{headline}</p>
 
-          <div className="mt-6 px-6 pt-6 pb-6">
+          <div className="mt-6">
             <Quadrant state={state} />
           </div>
+
+          <p className="mt-6 text-base sm:text-lg text-navy-600 max-w-[52ch] mx-auto text-left sm:text-center">
+            {headline}
+          </p>
         </section>
 
         {/* State video */}
@@ -70,26 +61,15 @@ export default async function ResultsPage({ params }) {
           </div>
         </section>
 
-        {/* Insights */}
-        <section className="mt-6 rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-          <h2 className="text-2xl">Where it's coming from</h2>
-          <div className="mt-4 grid grid-cols-1 gap-4">
-            {areaOrder.map((area) => (
-              <InsightCard
-                key={area}
-                label={AREA_LABELS[area]}
-                body={AREA_INSIGHTS[area][areaBand(scores.areas[area].pct)]}
-                isFixFirst={area === scores.lowestArea}
-              />
-            ))}
-          </div>
-        </section>
-
         {/* Two edges */}
         <section className="mt-6 rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
           <h2 className="text-2xl">Which edge are you on</h2>
           <p className="mt-3 text-navy-600">{TWO_EDGES_COPY.intro}</p>
-          <p className="mt-3 font-display text-2xl text-navy-700">{TWO_EDGES_COPY.line}</p>
+          {/* Fog's headline already ends on this exact line; showing it twice on
+              one page reads as a mistake, not emphasis. */}
+          {state !== STATES.FOG && (
+            <p className="mt-3 font-display text-2xl text-navy-700">{TWO_EDGES_COPY.line}</p>
+          )}
           <p className="mt-3 text-navy-600">{TWO_EDGES_COPY.byState[state]}</p>
         </section>
 
