@@ -2,12 +2,22 @@
 
 ## Status
 
-- **PR #1** (initial build) merged and deployed to Railway. Live at
-  `https://build-production-f884.up.railway.app` (custom domain not yet attached).
-- **PR #2** (Beehiiv custom field bug fix) — see below.
-- **Scoring model redesign** (this change): dropped Capacity entirely. The quiz now scores two
-  axes only, Energy and Focus, and computes the state (Edge/Frantic/Fog/Blocked) from a quadrant
-  of the two rather than a self-reported pick. See "Scoring model" below.
+- **PR #1** (initial build) and **PR #2** (Beehiiv fix + scoring redesign) merged and deployed.
+  Live at `https://build-production-f884.up.railway.app` (custom domain not yet attached).
+- **Edge threshold**: Edge now needs 70%+ on both Energy and Focus, not just above the 50%
+  midpoint, so a middling result doesn't read as the best possible outcome. Other three states
+  unchanged.
+- **Score hidden from founders**: the results page no longer shows any percentage, gauge, or dot.
+  The quadrant graphic is now a static explainer (which of the four states, relative to the
+  others) with no position marker. Headlines and insight cards were reworded to drop the literal
+  numbers while keeping the tonal difference between a strong/middling/weak result internally.
+- **Flow reordered**: the 13 quiz questions now come first; contact details (name, email, phone,
+  marketing consent) are the last step, right before the result. Was contact-first before.
+- **Marketing consent**: a required checkbox on the contact step. Submission is blocked, both
+  client-side and server-side (`app/api/quiz/submit/route.js`), if it isn't ticked. Worth flagging:
+  bundling "get your result" with "receive marketing" in one checkbox is legally shaky under UK
+  GDPR/PECR (consent should generally be freely given, not a condition of using the service) —
+  built exactly as asked, but worth a compliance check before this goes live.
 - Railway project `peaceful-mindfulness`: Postgres is provisioned and wired in
   (`DATABASE_URL`), along with `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID`, `NEXT_PUBLIC_SITE_URL`.
 
@@ -67,10 +77,11 @@ as something to celebrate and build on, never as a warning.
 7. **Automation.** `quiz_completed` is set to `true` as a Beehiiv custom field on every quiz
    subscriber (`lib/beehiiv.js`). The actual automation triggered on that field, sending the 10
    emails in `/emails`, still needs building in the Beehiiv dashboard — that's gated behind a
-   Beehiiv plan upgrade for API/MCP-driven building, so it's a manual job for now. The 11 custom
+   Beehiiv plan upgrade for API/MCP-driven building, so it's a manual job for now. The 12 custom
    fields the app writes to also need creating there first (Settings → Subscribers → Custom
    Fields): `score`, `energy_score`, `focus_score` (number), `state`, `revenue_band`, `outcome_90`,
-   `obstacle`, `notes`, `results_url`, `phone` (text), `quiz_completed` (boolean).
+   `obstacle`, `notes`, `results_url`, `phone` (text), `quiz_completed`, `marketing_consent`
+   (boolean).
 8. **Analytics.** Plain first-party event log (Postgres `events` table), not Plausible.
    `getFunnelSummary()` in `lib/db.js` gives the landing-view-to-quiz-start percentage; no
    dashboard UI for it yet.

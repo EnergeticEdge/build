@@ -12,7 +12,6 @@ import {
 } from '@/lib/quizData';
 import { STATE_VIDEOS, SITE_URL } from '@/lib/config';
 import Logo from '@/components/Logo';
-import ScoreGauge from '@/components/results/ScoreGauge';
 import InsightCard from '@/components/results/InsightCard';
 import NextSteps from '@/components/results/NextSteps';
 import ShareButton from '@/components/results/ShareButton';
@@ -31,7 +30,7 @@ export default async function ResultsPage({ params }) {
   const scores = computeScores(lead.answers);
   const state = scores.state;
   const band = scoreBand(scores.totalPct);
-  const headline = HEADLINES[state]?.[band]?.(scores.totalPct) || '';
+  const headline = HEADLINES[state]?.[band] || '';
   const stateLabel = STATE_LABELS[state] || state;
   const videoUrl = STATE_VIDEOS[state];
   const resultsUrl = `${SITE_URL}/results/${id}`;
@@ -50,14 +49,11 @@ export default async function ResultsPage({ params }) {
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange">
             {lead.first_name}, here's where you're operating from
           </p>
-          <div className="mt-5 flex justify-center">
-            <ScoreGauge percentage={scores.totalPct} label={stateLabel} />
-          </div>
           <h1 className="mt-5 text-4xl sm:text-5xl">{stateLabel}</h1>
           <p className="mt-4 text-base sm:text-lg text-navy-600 max-w-[50ch] mx-auto">{headline}</p>
 
-          <div className="mt-6 flex justify-center px-6 pt-6 pb-6">
-            <Quadrant energyPct={scores.areas.energy.pct} focusPct={scores.areas.focus.pct} state={state} />
+          <div className="mt-6 px-6 pt-6 pb-6">
+            <Quadrant state={state} />
           </div>
         </section>
 
@@ -74,7 +70,7 @@ export default async function ResultsPage({ params }) {
           </div>
         </section>
 
-        {/* Three insights */}
+        {/* Insights */}
         <section className="mt-6 rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
           <h2 className="text-2xl">Where it's coming from</h2>
           <div className="mt-4 grid grid-cols-1 gap-4">
@@ -82,7 +78,6 @@ export default async function ResultsPage({ params }) {
               <InsightCard
                 key={area}
                 label={AREA_LABELS[area]}
-                percentage={scores.areas[area].pct}
                 body={AREA_INSIGHTS[area][areaBand(scores.areas[area].pct)]}
                 isFixFirst={area === scores.lowestArea}
               />
@@ -112,7 +107,7 @@ export default async function ResultsPage({ params }) {
 
         {/* Share */}
         <section className="mt-8 flex justify-center">
-          <ShareButton text={SHARE_COPY.text(stateLabel, scores.totalPct)} url={resultsUrl} />
+          <ShareButton text={SHARE_COPY.text(stateLabel)} url={resultsUrl} />
         </section>
       </div>
     </main>
