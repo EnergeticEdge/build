@@ -76,7 +76,8 @@ export default function ContactStep({ onSubmit, onBack }) {
           onChange={(e) => setMarketingConsent(e.target.checked)}
         />
         <span>
-          Send me my result, plus The Capacity Gap newsletter and occasional emails from The Energetic Edge.
+          Yes, send me my result. I'm happy to receive email marketing from The Energetic Edge, including The
+          Capacity Gap newsletter. I can opt out any time.
         </span>
       </label>
 
