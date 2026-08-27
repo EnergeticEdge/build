@@ -13,7 +13,7 @@
 
 Hi {{first name | there}},
 
-Your lowest score was in **{{energy_score}}%** energy, **{{focus_score}}%** focus, or **{{capacity_score}}%** capacity, whichever came out lowest on your result. Start there. Not because the others don't matter, but because energy feeds the rest, and fixing focus while energy is still leaking is like refilling a bath with the plug out.
+Your lowest score was either **{{energy_score}}%** energy or **{{focus_score}}%** focus, whichever came out lower on your result. Start there. Energy feeds the rest, so if energy's the gap, fix that first, fixing focus while energy is still leaking is like refilling a bath with the plug out.
 
 Here's the smallest version of a start: pick one evening this week and switch off from work forty minutes earlier than usual. No plan beyond that. Just prove to your own nervous system that the business survives without you in it for forty extra minutes.
 

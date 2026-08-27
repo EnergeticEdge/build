@@ -1,79 +1,95 @@
 # TODO — before this goes live
 
+## Status
+
+- **PR #1** (initial build) merged and deployed to Railway. Live at
+  `https://build-production-f884.up.railway.app` (custom domain not yet attached).
+- **PR #2** (Beehiiv custom field bug fix) — see below.
+- **Scoring model redesign** (this change): dropped Capacity entirely. The quiz now scores two
+  axes only, Energy and Focus, and computes the state (Edge/Frantic/Fog/Blocked) from a quadrant
+  of the two rather than a self-reported pick. See "Scoring model" below.
+- Railway project `peaceful-mindfulness`: Postgres is provisioned and wired in
+  (`DATABASE_URL`), along with `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID`, `NEXT_PUBLIC_SITE_URL`.
+
+## Scoring model
+
+Two axes, Energy (Q1-4) and Focus (Q5-8), each question worth 0-3 across four answer options.
+Q9 is the original "which of these is closest to how running your business feels" question, kept
+word for word, but it now scores *both* axes at once (0-3 each) depending on which option is
+picked, rather than being read directly as the state. State is a straight quadrant read: energy
+≥50% and focus ≥50% is Edge, high energy/low focus is Frantic, low/low is Fog, low energy/high
+focus is Blocked. The results page shows this as an actual 2x2 grid (`components/results/
+Quadrant.js`) with a dot at the real position, not just the label.
+
+This replaced the original design where Capacity was a third scored area (Q8-10) and state came
+from a single self-reported question (old Q11), independent of the score. That produced results
+that could visibly disagree with each other (e.g. a "Blocked" pick with strong Focus and Energy
+scores) — Keith flagged this after testing the live quiz, and asked for exactly the quadrant model
+above instead. `capacity_score` is still a column in the `leads` table (constraint relaxed, not
+dropped, so no historical data was lost) and may still exist as an orphaned Beehiiv custom field
+from before this change; both are harmless to leave as is.
+
 ## Source material used
 
 No literal `founder-energy-quiz-funnel-design.md` was ever supplied. This build was written from:
-- The scoring/page/logic spec Keith gave directly in the build brief (Q1-10 Yes/Sometimes/No,
-  Q11 state, Q12 revenue, Q13/Q14 single-select, Q15 free text; area/score bands; next-steps
-  revenue thresholds; Beehiiv fields; voice rules).
+- The scoring/page/logic spec Keith gave directly in the build brief, since revised per the
+  "Scoring model" section above.
 - `keith-voice-profile.md`, `brand-device-two-edges.md`, `the-energetic-edge-brand-overview.md`.
 - The Business OS and ICP/Flagship Offer docs (Google Drive), for real facts: SIMPLER framework,
   £4,997 Reset, £197 Clarity Call, £250k revenue target, the Capacity Cost Read (£26k-£52k/yr).
-- An early static HTML prototype of the quiz (visual style reference only — its 8-question,
-  state-tally scoring model was **not** used; this build follows the 15-question spec above).
+- An early static HTML prototype of the quiz (visual style reference only — its scoring model
+  was not used).
 
-Because of that, every question, headline, insight and email is copy I wrote to fit the spec and
+Because of that, every question, headline, insight and email is copy written to fit the spec and
 voice rules, not transcribed from an existing doc. Read it before it goes live, particularly the
-12 headlines and 9 insight blocks in `lib/quizData.js`.
+12 headlines and 6 insight blocks in `lib/quizData.js`.
 
 **Edge state framing:** `brand-device-two-edges.md` and the ICP doc both describe Edge as
 "performing well but closer to the line than he thinks." Keith confirmed in this build session
 that framing is wrong and should not be used anywhere in this funnel. Edge is written throughout
-as something to celebrate and build on, never as a warning. If those docs get reused for other
-assets, flag the same conflict again.
+as something to celebrate and build on, never as a warning.
 
 ## Real placeholders to fill in
 
 1. **Logo files.** `TEELogoSide250px.png`, `TEELogoBelow250px.png`, `TEEmarque250px.png` were
    never supplied. `components/Logo.js` is a text wordmark placeholder using the existing
-   `public/favicon.svg` marque shape. Swap it for the real logo once you have the files.
+   `public/favicon.svg` marque shape.
 2. **Landing page credibility stat** (`app/page.js`, Credibility section). Currently a visible
-   bracketed placeholder: add a real number (founders through the quiz/programme, a measurable
-   outcome) rather than inventing one.
+   bracketed placeholder.
 3. **Four state videos** (Edge / Frantic / Fog / Blocked). `lib/config.js` → `STATE_VIDEOS` is
-   `null` for all four. The results page shows a labelled placeholder box until these are set to
-   real URLs.
+   `null` for all four. The results page shows a labelled placeholder box until set.
 4. **SIMPLER Guide link.** No link was supplied. `lib/config.js` → `LINKS.guide` is `null`, which
-   makes every "Get the SIMPLER Guide" CTA hide itself (results page next-steps, emails 3 and 6).
-   Set the real URL once it exists and those CTAs reappear automatically.
+   makes every "Get the SIMPLER Guide" CTA hide itself. Set the real URL and those CTAs reappear.
 5. **Email 7 (`emails/07-the-real-cost.md`).** Uses the real, sourced £26,000-£52,000/year range
-   from the ICP doc's Capacity Cost Read, but leaves a bracketed placeholder for a specific real
-   example (a client's actual numbers, or Keith's own worked example) as the brief asked for.
-6. **Email 8 (`emails/08-client-story.md`).** Entirely a placeholder. No real client story exists
-   in any source document, so nothing was invented. Needs a real, anonymised-if-necessary example:
-   who they were, what state they were in, what changed.
-7. **Automation trigger.** Beehiiv doesn't have a confirmed tag-on-create API, so the trigger is a
-   custom field `quiz_completed` set to `"true"` on every quiz subscriber (see `lib/beehiiv.js`).
-   You still need to build the actual automation in the Beehiiv dashboard, triggered on
-   `quiz_completed = true`, and point it at the 10 emails in `/emails`.
-8. **Analytics.** Built as a plain first-party event log (Postgres `events` table), not Plausible,
-   per the "I don't know what that means" answer in this build session. `getFunnelSummary()` in
-   `lib/db.js` gives the landing-view-to-quiz-start percentage the brief asked to track; there's
-   no dashboard UI for it yet, just the function. Say the word if you want a simple `/admin` page
-   for it.
+   from the ICP doc's Capacity Cost Read, but leaves a placeholder for a specific real example.
+6. **Email 8 (`emails/08-client-story.md`).** Entirely a placeholder — no real client story exists
+   in any source document.
+7. **Automation.** `quiz_completed` is set to `true` as a Beehiiv custom field on every quiz
+   subscriber (`lib/beehiiv.js`). The actual automation triggered on that field, sending the 10
+   emails in `/emails`, still needs building in the Beehiiv dashboard — that's gated behind a
+   Beehiiv plan upgrade for API/MCP-driven building, so it's a manual job for now. The 11 custom
+   fields the app writes to also need creating there first (Settings → Subscribers → Custom
+   Fields): `score`, `energy_score`, `focus_score` (number), `state`, `revenue_band`, `outcome_90`,
+   `obstacle`, `notes`, `results_url`, `phone` (text), `quiz_completed` (boolean).
+8. **Analytics.** Plain first-party event log (Postgres `events` table), not Plausible.
+   `getFunnelSummary()` in `lib/db.js` gives the landing-view-to-quiz-start percentage; no
+   dashboard UI for it yet.
 
-## Beehiiv integration — verify before relying on it
+## Beehiiv integration
 
-`developers.beehiiv.com` was unreachable from this build environment (network egress blocked), so
-`lib/beehiiv.js` was written from beehiiv's help-centre articles and search results, not the live
-API reference. The parts that matter most to check:
-- Custom field creation payload (`POST /v2/publications/{id}/custom_fields`) — field names used:
-  `score`, `state`, `energy_score`, `focus_score`, `capacity_score`, `revenue_band`, `outcome_90`,
-  `obstacle`, `notes`, `results_url`, `quiz_completed`.
-- Whether `custom_fields: [{ name: "First Name", value }]` is really how the reserved first-name
-  field is set on subscriber creation (vs. a dedicated top-level field).
-- Merge tag syntax used in the emails: `{{first name | there}}` for the reserved name field,
-  `{{score}}` / `{{state}}` / `{{results_url}}` etc. for the custom fields above — confirmed
-  against beehiiv's own merge-tag help article, but double check the custom field ones render once
-  real subscribers exist.
+`lib/beehiiv.js`'s custom-field creation shape was corrected against a real 400 response from the
+live API after the first production deploy (kind enum is `string | integer | boolean | date |
+datetime | list`, not `number`; the field-name param is `display`, not `display_name`). Subscriber
+creation (`custom_fields: [{name, value}]`, matched against each field's real snake_case `name`)
+has not produced an error.
 
 If a submission's Beehiiv call fails, it still saves to the `leads` table with
-`beehiiv_synced = false` and the error in `beehiiv_error`, so nothing is lost — those rows can be
-replayed once the integration is confirmed working.
+`beehiiv_synced = false` and the error in `beehiiv_error`, so nothing is lost.
 
 ## Infra
 
-- Needs a Postgres database. On Railway, add a Postgres service to this project and it will inject
-  `DATABASE_URL` automatically; `lib/db.js` creates its own tables on first use.
-- Set `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID` and `NEXT_PUBLIC_SITE_URL` (your real domain) as
-  environment variables in Railway. Nothing sensitive is committed to this repo.
+- Postgres is live on Railway (project `peaceful-mindfulness`, service `Postgres`), wired into the
+  `build` service via `DATABASE_URL`.
+- `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID`, `NEXT_PUBLIC_SITE_URL` are set on the `build`
+  service. `NEXT_PUBLIC_SITE_URL` currently points at the Railway subdomain
+  (`build-production-f884.up.railway.app`) — update it once a custom domain is attached.

@@ -17,10 +17,10 @@ Quick one, on the back of your result.
 
 Founders tend to explain their state as a character flaw. Not disciplined enough, not resilient enough, not built for this the way some other founder apparently is. It's rarely true, and it's never useful.
 
-Energy comes before clarity. If the fuel isn't there, focus can't be either, and if focus isn't there, capacity is the next thing to go. That's not a motivation sequence. It's closer to plumbing.
+Energy comes before clarity. If the fuel isn't there, focus can't be either. That's not a motivation sequence. It's closer to plumbing.
 
 <!-- STATE BLOCK: EDGE -->
-You're proof the sequence works when it's in place: energy feeding focus, focus feeding capacity. What's worth understanding now is which part of that chain is doing the most work, because that's usually the part with the least margin.
+You're proof the sequence works when it's in place: energy feeding focus. What's worth understanding now is which of the two is doing the most work, because that's usually the one with the least margin.
 <!-- END STATE BLOCK: EDGE -->
 
 <!-- STATE BLOCK: FRANTIC -->
