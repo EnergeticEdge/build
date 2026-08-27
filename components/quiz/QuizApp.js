@@ -13,16 +13,18 @@ const STEP_CONTACT = 'contact';
 
 export default function QuizApp() {
   const router = useRouter();
-  const steps = useMemo(() => [STEP_CONTACT, ...ALL_QUESTIONS.map((q) => q.id)], []);
+  // Questions first, contact details (with the marketing consent gate) last, right
+  // before the result is revealed — captures intent before asking for an email.
+  const steps = useMemo(() => [...ALL_QUESTIONS.map((q) => q.id), STEP_CONTACT], []);
   const [stepIndex, setStepIndex] = useState(0);
-  const [contact, setContact] = useState({ firstName: '', email: '', phone: '' });
   const [answers, setAnswers] = useState({});
+  const [contact, setContact] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
   const currentStepId = steps[stepIndex];
 
-  async function submitQuiz(finalAnswers) {
+  async function submitQuiz(contact, finalAnswers) {
     setSubmitting(true);
     setSubmitError('');
     try {
@@ -40,30 +42,24 @@ export default function QuizApp() {
     }
   }
 
-  function handleContactNext(values) {
+  function handleContactSubmit(values) {
     setContact(values);
     trackClick('contact_complete');
-    setStepIndex(1);
+    submitQuiz(values, answers);
   }
 
   function handleAnswer(questionId, value) {
     const nextAnswers = { ...answers, [questionId]: value };
     setAnswers(nextAnswers);
-
-    const nextIndex = stepIndex + 1;
-    if (nextIndex >= steps.length) {
-      submitQuiz(nextAnswers);
-    } else {
-      setStepIndex(nextIndex);
-    }
+    setStepIndex(stepIndex + 1);
   }
 
   function handleBack() {
     if (stepIndex > 0) setStepIndex(stepIndex - 1);
   }
 
-  const questionNumber = stepIndex; // step 1 = question 1
-  const currentQuestion = currentStepId === STEP_CONTACT ? null : ALL_QUESTIONS[stepIndex - 1];
+  const questionNumber = stepIndex + 1;
+  const currentQuestion = currentStepId === STEP_CONTACT ? null : ALL_QUESTIONS[stepIndex];
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -78,7 +74,9 @@ export default function QuizApp() {
 
       <div className="flex-1 flex items-center justify-center px-5 py-8 sm:px-8">
         <div className="w-full max-w-xl">
-          {currentStepId === STEP_CONTACT && <ContactStep value={contact} onNext={handleContactNext} />}
+          {currentStepId === STEP_CONTACT && !submitting && (
+            <ContactStep onSubmit={handleContactSubmit} onBack={handleBack} />
+          )}
 
           {currentQuestion && !submitting && (
             <QuestionScreen
@@ -100,11 +98,7 @@ export default function QuizApp() {
           {submitError && (
             <div className="mt-4 rounded-lg bg-white/10 p-4 text-center text-sm text-white">
               {submitError}
-              <button
-                type="button"
-                className="ml-2 underline"
-                onClick={() => submitQuiz(answers)}
-              >
+              <button type="button" className="ml-2 underline" onClick={() => submitQuiz(contact, answers)}>
                 Try again
               </button>
             </div>

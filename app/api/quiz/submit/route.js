@@ -9,6 +9,9 @@ export async function POST(request) {
   if (!body?.contact?.email || !body?.contact?.firstName || !body?.answers) {
     return NextResponse.json({ error: 'missing_fields' }, { status: 400 });
   }
+  if (body.contact.marketingConsent !== true) {
+    return NextResponse.json({ error: 'consent_required' }, { status: 400 });
+  }
 
   const { contact, answers } = body;
   const scores = computeScores(answers);
@@ -34,6 +37,7 @@ export async function POST(request) {
       outcome90,
       obstacle,
       notes,
+      marketingConsent: contact.marketingConsent,
       beehiivSynced: false,
     });
   } catch (err) {
@@ -58,6 +62,7 @@ export async function POST(request) {
         outcome_90: outcome90,
         obstacle,
         notes,
+        marketing_consent: 'true',
         results_url: `${SITE_URL}/results/${leadId}`,
         [AUTOMATION_TRIGGER_FIELD]: 'true',
       },

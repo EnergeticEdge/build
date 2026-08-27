@@ -45,7 +45,7 @@ export default function QuestionScreen({ question, index, total, value, onAnswer
             onClick={() => onAnswer(notes.trim())}
             className="mt-4 w-full rounded-lg bg-orange px-6 py-4 font-sans font-bold text-white transition hover:-translate-y-0.5 sm:w-auto"
           >
-            See my result →
+            Continue →
           </button>
         </div>
       )}
