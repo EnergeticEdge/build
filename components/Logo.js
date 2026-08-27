@@ -1,17 +1,12 @@
-/*
-  Placeholder wordmark standing in for TEELogoSide250px.png (real logo not supplied — see TODO.md).
-  Swap for an <img> once the real files are available.
-*/
+// White-on-navy variant, derived from the real logo (navy swapped for white,
+// orange unchanged) since every page this appears on sits on the navy background
+// and the brand overview calls for a white version there.
 export default function Logo({ className = '' }) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-        <rect width="24" height="24" rx="4" fill="#0b3a6a" />
-        <path d="M15 4 L9 20" stroke="#ff6a00" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-      <span className="font-display text-xl tracking-wide">
-        THE ENERGETIC <span className="text-orange">EDGE</span>
-      </span>
-    </div>
+    <img
+      src="/assets/logo-side-white.svg"
+      alt="The Energetic Edge"
+      className={`h-6 w-auto sm:h-7 ${className}`}
+    />
   );
 }

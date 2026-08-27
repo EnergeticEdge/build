@@ -1,64 +1,64 @@
 import { STATE_LABELS, STATES } from '@/lib/quizData';
 
-// A static explainer of where the four states sit relative to each other. No score,
-// no position marker: just which quadrant the founder landed in, highlighted.
-const SIZE = 240;
-const MID = SIZE / 2;
-const EDGE_CUT = SIZE * 0.7;
+// A static explainer of the four states, evenly laid out. No score, no position
+// marker, just which one applies, highlighted. (Edge actually needs a stricter
+// bar than the other three to reach: see lib/scoring.js. Now that nothing is
+// plotted by position, that detail doesn't need to show up in the shape.)
+const CELLS = [
+  { state: STATES.FRANTIC, col: 1, row: 1 },
+  { state: STATES.EDGE, col: 2, row: 1 },
+  { state: STATES.FOG, col: 1, row: 2 },
+  { state: STATES.BLOCKED, col: 2, row: 2 },
+];
 
 export default function Quadrant({ state }) {
-  const activeFill = 'rgba(255,106,0,0.14)';
-  const fillFor = (s) => (s === state ? activeFill : '#f2f6fa');
-
   return (
-    <div
-      className="relative shrink-0 mx-auto"
-      style={{ width: SIZE, height: SIZE }}
-      role="img"
-      aria-label={`Your state: ${STATE_LABELS[state]}`}
-    >
-      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
-        {/* Frantic occupies the whole top half, except the Edge corner carved out
-            of its top-right: Edge is a higher bar than just clearing the midpoint. */}
-        <rect x={0} y={0} width={SIZE} height={MID} fill={fillFor(STATES.FRANTIC)} stroke="#dbe4ee" strokeWidth={1} />
-        <rect x={0} y={MID} width={MID} height={MID} fill={fillFor(STATES.FOG)} stroke="#dbe4ee" strokeWidth={1} />
-        <rect x={MID} y={MID} width={MID} height={MID} fill={fillFor(STATES.BLOCKED)} stroke="#dbe4ee" strokeWidth={1} />
-        <rect
-          x={EDGE_CUT}
-          y={0}
-          width={SIZE - EDGE_CUT}
-          height={SIZE - EDGE_CUT}
-          fill={fillFor(STATES.EDGE)}
-          stroke="#dbe4ee"
-          strokeWidth={1}
-        />
+    <div className="mx-auto w-full max-w-[280px]">
+      <div className="flex items-center justify-center pb-2 pl-9">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300">More energy</span>
+      </div>
 
-        <text x={MID / 2} y={MID / 2 + 6} textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize={state === STATES.FRANTIC ? 20 : 16} fill={state === STATES.FRANTIC ? '#ff6a00' : '#8598ac'}>
-          {STATE_LABELS[STATES.FRANTIC]}
-        </text>
-        <text x={(EDGE_CUT + SIZE) / 2} y={(SIZE - EDGE_CUT) / 2 + 5} textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize={state === STATES.EDGE ? 18 : 14} fill={state === STATES.EDGE ? '#ff6a00' : '#8598ac'}>
-          {STATE_LABELS[STATES.EDGE]}
-        </text>
-        <text x={MID / 2} y={MID + MID / 2 + 6} textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize={state === STATES.FOG ? 20 : 16} fill={state === STATES.FOG ? '#ff6a00' : '#8598ac'}>
-          {STATE_LABELS[STATES.FOG]}
-        </text>
-        <text x={MID + MID / 2} y={MID + MID / 2 + 6} textAnchor="middle" fontFamily="var(--font-bebas), sans-serif" fontSize={state === STATES.BLOCKED ? 20 : 16} fill={state === STATES.BLOCKED ? '#ff6a00' : '#8598ac'}>
-          {STATE_LABELS[STATES.BLOCKED]}
-        </text>
-      </svg>
+      <div className="flex items-stretch gap-2">
+        <div className="flex w-5 shrink-0 items-center justify-center">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300 [writing-mode:vertical-rl] rotate-180 whitespace-nowrap">
+            Less focus
+          </span>
+        </div>
 
-      <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.12em] text-navy-300">
-        More energy
-      </span>
-      <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.12em] text-navy-300">
-        Less energy
-      </span>
-      <span className="absolute top-1/2 -left-2 -translate-x-full -translate-y-1/2 text-[10px] uppercase tracking-[0.12em] text-navy-300 [writing-mode:vertical-rl] rotate-180">
-        Less focus
-      </span>
-      <span className="absolute top-1/2 -right-2 translate-x-full -translate-y-1/2 text-[10px] uppercase tracking-[0.12em] text-navy-300 [writing-mode:vertical-rl]">
-        More focus
-      </span>
+        <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-2.5">
+          {CELLS.map((cell) => {
+            const active = cell.state === state;
+            return (
+              <div
+                key={cell.state}
+                className={`flex aspect-square items-center justify-center rounded-2xl border transition-colors ${
+                  active
+                    ? 'border-orange bg-orange/10'
+                    : 'border-navy-100 bg-navy-50'
+                }`}
+              >
+                <span
+                  className={`font-display text-lg tracking-wide sm:text-xl ${
+                    active ? 'text-orange' : 'text-navy-300'
+                  }`}
+                >
+                  {STATE_LABELS[cell.state]}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="flex w-5 shrink-0 items-center justify-center">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300 [writing-mode:vertical-rl] whitespace-nowrap">
+            More focus
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center pt-2 pl-9">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300">Less energy</span>
+      </div>
     </div>
   );
 }
