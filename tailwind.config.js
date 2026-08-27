@@ -24,7 +24,7 @@ module.exports = {
       },
       fontFamily: {
         display: ['var(--font-bebas)', 'sans-serif'],
-        sans: ['var(--font-dmsans)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
     },
   },

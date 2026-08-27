@@ -1,4 +1,4 @@
-import { Bebas_Neue, DM_Sans } from 'next/font/google';
+import { Bebas_Neue, Inter } from 'next/font/google';
 import './globals.css';
 
 const bebas = Bebas_Neue({
@@ -8,9 +8,9 @@ const bebas = Bebas_Neue({
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-dmsans',
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -25,7 +25,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${bebas.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${bebas.variable} ${inter.variable}`}>
       <body className="bg-navy-700 font-sans text-white antialiased">{children}</body>
     </html>
   );
