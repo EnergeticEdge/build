@@ -16,6 +16,7 @@ import ScoreGauge from '@/components/results/ScoreGauge';
 import InsightCard from '@/components/results/InsightCard';
 import NextSteps from '@/components/results/NextSteps';
 import ShareButton from '@/components/results/ShareButton';
+import Quadrant from '@/components/results/Quadrant';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -28,14 +29,14 @@ export default async function ResultsPage({ params }) {
   if (!lead) notFound();
 
   const scores = computeScores(lead.answers);
-  const state = lead.state;
+  const state = scores.state;
   const band = scoreBand(scores.totalPct);
   const headline = HEADLINES[state]?.[band]?.(scores.totalPct) || '';
   const stateLabel = STATE_LABELS[state] || state;
   const videoUrl = STATE_VIDEOS[state];
   const resultsUrl = `${SITE_URL}/results/${id}`;
 
-  const areaOrder = ['energy', 'focus', 'capacity'];
+  const areaOrder = ['energy', 'focus'];
 
   return (
     <main className="min-h-screen">
@@ -54,6 +55,10 @@ export default async function ResultsPage({ params }) {
           </div>
           <h1 className="mt-5 text-4xl sm:text-5xl">{stateLabel}</h1>
           <p className="mt-4 text-base sm:text-lg text-navy-600 max-w-[50ch] mx-auto">{headline}</p>
+
+          <div className="mt-6 flex justify-center px-6 pt-6 pb-6">
+            <Quadrant energyPct={scores.areas.energy.pct} focusPct={scores.areas.focus.pct} state={state} />
+          </div>
         </section>
 
         {/* State video */}

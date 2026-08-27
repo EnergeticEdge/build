@@ -12,16 +12,12 @@ export async function POST(request) {
 
   const { contact, answers } = body;
   const scores = computeScores(answers);
+  const state = scores.state;
 
-  const state = answers.q11;
-  const revenueBand = answers.q12;
-  const outcome90 = answers.q13;
-  const obstacle = answers.q14;
-  const notes = typeof answers.q15 === 'string' ? answers.q15 : '';
-
-  if (!state) {
-    return NextResponse.json({ error: 'missing_state' }, { status: 400 });
-  }
+  const revenueBand = answers.q10;
+  const outcome90 = answers.q11;
+  const obstacle = answers.q12;
+  const notes = typeof answers.q13 === 'string' ? answers.q13 : '';
 
   let leadId;
   try {
@@ -34,7 +30,6 @@ export async function POST(request) {
       state,
       energyScore: scores.areas.energy.pct,
       focusScore: scores.areas.focus.pct,
-      capacityScore: scores.areas.capacity.pct,
       revenueBand,
       outcome90,
       obstacle,
@@ -59,7 +54,6 @@ export async function POST(request) {
         state,
         energy_score: scores.areas.energy.pct,
         focus_score: scores.areas.focus.pct,
-        capacity_score: scores.areas.capacity.pct,
         revenue_band: revenueBand,
         outcome_90: outcome90,
         obstacle,

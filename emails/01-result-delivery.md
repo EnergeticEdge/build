@@ -15,12 +15,12 @@ Hi {{first name | there}},
 
 You just took the Founder Energy Quiz, so here's the headline: you're in **{{state}}**, scoring **{{score}}%**.
 
-Your full result is here, broken down by energy, focus and capacity, with the one thing to fix first:
+Your full result is here, broken down by energy and focus, with the one thing to fix first:
 
 {{results_url}}
 
 <!-- STATE BLOCK: EDGE -->
-Edge is the state most founders never get to. Energy, focus and capacity are all working for you right now, and that's worth pausing on before you read anything else. The real question in this email isn't what's wrong. It's how far you want to take what's already working.
+Edge is the state most founders never get to. Energy and focus are both working for you right now, and that's worth pausing on before you read anything else. The real question in this email isn't what's wrong. It's how far you want to take what's already working.
 <!-- END STATE BLOCK: EDGE -->
 
 <!-- STATE BLOCK: FRANTIC -->
