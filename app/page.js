@@ -5,12 +5,12 @@ import TrackedLink from '@/components/TrackedLink';
 const HOOKS = {
   frustration: {
     eyebrow: '15 questions · 3 minutes · no fluff',
-    heading: "You're not lazy. You've just run out of fuel.",
+    heading: "Are you frustrated that you're doing everything right and still running on empty?",
     body: "You've tried the better calendar, the earlier alarm, the new app. All useful. None of it touched the real problem. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
   },
   ready: {
     eyebrow: '15 questions · 3 minutes · no fluff',
-    heading: "You're doing fine. You want to know how far fine can go.",
+    heading: "Are you ready to find out how much further you could actually go?",
     body: "You're not falling apart, and this isn't that kind of quiz. It's for finding out whether the version of you running this business right now is close to its ceiling, or nowhere near it.",
   },
 };
@@ -53,11 +53,10 @@ export default async function LandingPage({ searchParams }) {
       {/* Value proposition */}
       <section className="bg-navy-800 px-5 sm:px-8 py-12 sm:py-16">
         <div className="mx-auto max-w-xl">
-          <h2 className="text-3xl sm:text-4xl">Energy is revenue. Focus is profit. Capacity is your asset.</h2>
+          <h2 className="text-3xl sm:text-4xl">Energy is revenue. Focus is profit.</h2>
           <p className="mt-4 text-base sm:text-lg text-white/80 max-w-[46ch]">
-            The quiz measures the three things that actually determine how you perform: your energy, your focus,
-            and your capacity to carry what the business is asking of you right now. You'll get a score, a state,
-            and the one thing to fix first.
+            The quiz measures the two things that actually determine how you perform: your energy and your
+            focus. You'll get your state and the one thing to fix first.
           </p>
         </div>
       </section>

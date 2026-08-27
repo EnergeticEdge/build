@@ -2,8 +2,18 @@
 
 ## Status
 
-- **PR #1, #2, #3** merged and deployed. Live at
+- **PR #1-#4** merged and deployed. Live at
   `https://build-production-f884.up.railway.app` (custom domain not yet attached).
+- **15 questions, for real now.** The landing page always said "15 questions" but the quiz only
+  had 13 after the Capacity redesign. Added two more scored questions (a 5th Energy question on
+  monthly consistency, a 5th Focus question on whether the important work actually moves week to
+  week) rather than change the marketing copy. Energy is now Q1-5, Focus Q6-10, the dual-scoring
+  question Q11, then revenue/outcome/obstacle/notes as Q12-15. `app/api/quiz/submit/route.js` now
+  reads these via the question objects' own `.id` rather than hardcoded strings, so a future
+  renumbering can't silently break it the way this one would have.
+- **Landing headlines** are now actual questions ("Are you frustrated that..." / "Are you ready
+  to..."), and a stale "energy, focus and capacity" line in the value proposition section (left
+  over from before Capacity was dropped) is fixed to just energy and focus.
 - **Real logo files are in** (`public/assets/logo-side.svg`, `logo-below.svg`, `marque.svg`, plus
   `-white` variants used in every header since all three pages sit on the navy background). No
   more text-wordmark placeholder. One thing worth knowing: the actual artwork uses navy `#004174`

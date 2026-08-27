@@ -3,6 +3,7 @@ import { computeScores } from '@/lib/scoring';
 import { insertLead, markBeehiivSynced, logEvent } from '@/lib/db';
 import { ensureCustomFields, upsertSubscriber, AUTOMATION_TRIGGER_FIELD } from '@/lib/beehiiv';
 import { SITE_URL } from '@/lib/config';
+import { REVENUE_QUESTION, OUTCOME_QUESTION, OBSTACLE_QUESTION, NOTES_QUESTION } from '@/lib/quizData';
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -17,10 +18,11 @@ export async function POST(request) {
   const scores = computeScores(answers);
   const state = scores.state;
 
-  const revenueBand = answers.q10;
-  const outcome90 = answers.q11;
-  const obstacle = answers.q12;
-  const notes = typeof answers.q13 === 'string' ? answers.q13 : '';
+  const revenueBand = answers[REVENUE_QUESTION.id];
+  const outcome90 = answers[OUTCOME_QUESTION.id];
+  const obstacle = answers[OBSTACLE_QUESTION.id];
+  const notesRaw = answers[NOTES_QUESTION.id];
+  const notes = typeof notesRaw === 'string' ? notesRaw : '';
 
   let leadId;
   try {
