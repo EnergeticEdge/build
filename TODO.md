@@ -2,6 +2,20 @@
 
 ## Status
 
+- **Design and question bank rebuilt from an earlier HTML prototype (this round).** Keith liked
+  the look and the questions in a standalone `index.html` prototype he'd built separately, so on
+  his instruction this app now runs that prototype's CSS design system (`app/globals.css`, ported
+  wholesale: dark navy background, Bebas/Inter type, bordered card components) and its 16 scored
+  questions verbatim (`lib/quizData.js` → `SCORED_QUESTIONS`, Q1-16, 8 Energy/8 Focus). Everything
+  else stays the build already had running: this repo's own 4 non-scored qualifier questions
+  (revenue band, 90-day outcome, obstacle, notes — now Q17-20, 20 questions total), the real
+  Postgres backup table, and the Beehiiv sync in `app/api/quiz/submit/route.js`. The prototype's own
+  fire-and-forget `/api/subscribe` stub was explicitly **not** carried over — every submission still
+  goes through the real endpoint that writes to `leads` first and syncs Beehiiv best-effort after,
+  so a Beehiiv outage never loses a lead. The old "YOU ARE HERE" dot on the quadrant graphic is gone
+  per Keith's explicit instruction — the quadrant is state-only, same as it already was.
+- Scoring thresholds now match the prototype's exactly (see "Scoring model" below) rather than the
+  70%/70% custom rule from the previous round.
 - **PR #1-#4** merged and deployed. Live at
   `https://build-production-f884.up.railway.app` (custom domain not yet attached).
 - **15 questions, for real now.** The landing page always said "15 questions" but the quiz only
@@ -45,21 +59,22 @@
 
 ## Scoring model
 
-Two axes, Energy (Q1-4) and Focus (Q5-8), each question worth 0-3 across four answer options.
-Q9 is the original "which of these is closest to how running your business feels" question, kept
-word for word, but it now scores *both* axes at once (0-3 each) depending on which option is
-picked, rather than being read directly as the state. State is a straight quadrant read: energy
-≥50% and focus ≥50% is Edge, high energy/low focus is Frantic, low/low is Fog, low energy/high
-focus is Blocked. The results page shows this as an actual 2x2 grid (`components/results/
-Quadrant.js`) with a dot at the real position, not just the label.
+Two axes, Energy and Focus, 8 questions each (Q1-16, alternating in that order in
+`SCORED_QUESTIONS`), each worth 0-3 across four answer options, max 24 raw per axis. Q17-20 are
+the qualifier questions (revenue band, 90-day outcome, obstacle, free-text notes) and don't feed
+the score at all. Thresholds (`lib/scoring.js`) match the HTML prototype exactly: Edge needs both
+axes at 18+ (75%) *and* zero bottom-option ("0") answers across all 16 — a stricter bar than either
+axis threshold alone, so a middling result never reads as the best outcome. Below that, whichever
+axis clears 14 (58%) decides Frantic (energy) vs Blocked (focus); if both clear it the higher axis
+wins the tie toward Frantic, and if neither clears it it's Fog. The results page shows this as a
+static 2x2 grid (`components/results/Quadrant.js`) with the founder's state highlighted — no score,
+no dot, same as before this round.
 
-This replaced the original design where Capacity was a third scored area (Q8-10) and state came
-from a single self-reported question (old Q11), independent of the score. That produced results
-that could visibly disagree with each other (e.g. a "Blocked" pick with strong Focus and Energy
-scores) — Keith flagged this after testing the live quiz, and asked for exactly the quadrant model
-above instead. `capacity_score` is still a column in the `leads` table (constraint relaxed, not
-dropped, so no historical data was lost) and may still exist as an orphaned Beehiiv custom field
-from before this change; both are harmless to leave as is.
+This replaced a previous 70%/70%-both-axes rule from an earlier round, which itself replaced the
+original design where Capacity was a third scored area and state came from a single self-reported
+question independent of the score. `capacity_score` is still a column in the `leads` table
+(constraint relaxed, not dropped, so no historical data was lost) and may still exist as an
+orphaned Beehiiv custom field from before that change; both are harmless to leave as is.
 
 ## Source material used
 
@@ -83,17 +98,15 @@ as something to celebrate and build on, never as a warning.
 
 ## Real placeholders to fill in
 
-1. **Landing page credibility stat** (`app/page.js`, Credibility section). Currently a visible
-   bracketed placeholder.
-3. **Four state videos** (Edge / Frantic / Fog / Blocked). `lib/config.js` → `STATE_VIDEOS` is
+1. **Four state videos** (Edge / Frantic / Fog / Blocked). `lib/config.js` → `STATE_VIDEOS` is
    `null` for all four. The results page shows a labelled placeholder box until set.
-4. **SIMPLER Guide link.** No link was supplied. `lib/config.js` → `LINKS.guide` is `null`, which
+2. **SIMPLER Guide link.** No link was supplied. `lib/config.js` → `LINKS.guide` is `null`, which
    makes every "Get the SIMPLER Guide" CTA hide itself. Set the real URL and those CTAs reappear.
-5. **Email 7 (`emails/07-the-real-cost.md`).** Uses the real, sourced £26,000-£52,000/year range
+3. **Email 7 (`emails/07-the-real-cost.md`).** Uses the real, sourced £26,000-£52,000/year range
    from the ICP doc's Capacity Cost Read, but leaves a placeholder for a specific real example.
-6. **Email 8 (`emails/08-client-story.md`).** Entirely a placeholder — no real client story exists
+4. **Email 8 (`emails/08-client-story.md`).** Entirely a placeholder — no real client story exists
    in any source document.
-7. **Automation.** `quiz_completed` is set to `true` as a Beehiiv custom field on every quiz
+5. **Automation.** `quiz_completed` is set to `true` as a Beehiiv custom field on every quiz
    subscriber (`lib/beehiiv.js`). The actual automation triggered on that field, sending the 10
    emails in `/emails`, still needs building in the Beehiiv dashboard — that's gated behind a
    Beehiiv plan upgrade for API/MCP-driven building, so it's a manual job for now. The 12 custom
@@ -101,7 +114,7 @@ as something to celebrate and build on, never as a warning.
    Fields): `score`, `energy_score`, `focus_score` (number), `state`, `revenue_band`, `outcome_90`,
    `obstacle`, `notes`, `results_url`, `phone` (text), `quiz_completed`, `marketing_consent`
    (boolean).
-8. **Analytics.** Plain first-party event log (Postgres `events` table), not Plausible.
+6. **Analytics.** Plain first-party event log (Postgres `events` table), not Plausible.
    `getFunnelSummary()` in `lib/db.js` gives the landing-view-to-quiz-start percentage; no
    dashboard UI for it yet.
 

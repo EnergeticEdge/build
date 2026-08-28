@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Logo from '@/components/Logo';
 import TrackEvent, { trackClick } from '@/components/TrackEvent';
 import ProgressBar from './ProgressBar';
 import ContactStep from './ContactStep';
@@ -37,7 +36,7 @@ export default function QuizApp() {
       const data = await res.json();
       router.push(`/results/${data.id}`);
     } catch (err) {
-      setSubmitError("Something went wrong sending your result. Try again in a moment.");
+      setSubmitError('Something went wrong sending your result. Try again in a moment.');
       setSubmitting(false);
     }
   }
@@ -60,51 +59,64 @@ export default function QuizApp() {
 
   const questionNumber = stepIndex + 1;
   const currentQuestion = currentStepId === STEP_CONTACT ? null : ALL_QUESTIONS[stepIndex];
+  const isCapture = currentStepId === STEP_CONTACT;
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="quiz-shell">
       <TrackEvent event="quiz_start" />
 
-      <header className="flex items-center justify-between px-5 py-5 sm:px-8">
-        <Logo />
-        <span className="text-xs uppercase tracking-[0.14em] text-white/50">Founder Energy Quiz</span>
-      </header>
+      {!isCapture && !submitting && (
+        <>
+          <ProgressBar step={stepIndex} total={steps.length - 1} />
+          <div className="quiz-body">
+            {currentQuestion && (
+              <QuestionScreen
+                question={currentQuestion}
+                index={questionNumber}
+                total={ALL_QUESTIONS.length}
+                value={answers[currentQuestion.id]}
+                onAnswer={(value) => handleAnswer(currentQuestion.id, value)}
+              />
+            )}
+          </div>
+          <div className="quiz-footer-nav">
+            <button type="button" className="back-link" onClick={handleBack}>
+              &larr; Back
+            </button>
+          </div>
+        </>
+      )}
 
-      <ProgressBar step={stepIndex} total={steps.length - 1} />
-
-      <div className="flex-1 flex items-center justify-center px-5 py-8 sm:px-8">
-        <div className="w-full max-w-xl">
-          {currentStepId === STEP_CONTACT && !submitting && (
-            <ContactStep onSubmit={handleContactSubmit} onBack={handleBack} />
-          )}
-
-          {currentQuestion && !submitting && (
-            <QuestionScreen
-              question={currentQuestion}
-              index={questionNumber}
-              total={ALL_QUESTIONS.length}
-              value={answers[currentQuestion.id]}
-              onAnswer={(value) => handleAnswer(currentQuestion.id, value)}
-              onBack={handleBack}
-            />
-          )}
-
-          {submitting && (
-            <div className="rounded-2xl bg-white p-8 text-center text-navy-700">
-              <p className="text-lg">Working out your result…</p>
-            </div>
-          )}
-
-          {submitError && (
-            <div className="mt-4 rounded-lg bg-white/10 p-4 text-center text-sm text-white">
-              {submitError}
-              <button type="button" className="ml-2 underline" onClick={() => submitQuiz(contact, answers)}>
-                Try again
-              </button>
-            </div>
-          )}
+      {isCapture && !submitting && (
+        <div className="capture-body">
+          <ContactStep onSubmit={handleContactSubmit} />
         </div>
-      </div>
+      )}
+
+      {submitting && (
+        <div className="capture-body">
+          <div className="capture-card">
+            <p className="sub">Working out your result…</p>
+          </div>
+        </div>
+      )}
+
+      {submitError && (
+        <div className="narrow" style={{ textAlign: 'center', paddingBottom: 24 }}>
+          <p className="microcopy" style={{ color: 'var(--orange)' }}>
+            {submitError}{' '}
+            <button
+              type="button"
+              onClick={() => submitQuiz(contact, answers)}
+              style={{ textDecoration: 'underline', color: 'inherit', background: 'none', border: 'none', cursor: 'pointer' }}
+            >
+              Try again
+            </button>
+          </p>
+        </div>
+      )}
+
+      <p className="tagline-footer">Energy is revenue. Focus is profit.</p>
     </main>
   );
 }

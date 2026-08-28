@@ -1,7 +1,16 @@
 import { notFound } from 'next/navigation';
 import { getLead } from '@/lib/db';
 import { computeScores } from '@/lib/scoring';
-import { HEADLINES, STATES, STATE_LABELS, TWO_EDGES_COPY, CONTACT_COPY, SHARE_COPY } from '@/lib/quizData';
+import {
+  HEADLINES,
+  SHORT_HEADLINES,
+  CALL_LABELS,
+  STATES,
+  STATE_LABELS,
+  TWO_EDGES_COPY,
+  CONTACT_COPY,
+  SHARE_COPY,
+} from '@/lib/quizData';
 import { STATE_VIDEOS, SITE_URL } from '@/lib/config';
 import Logo from '@/components/Logo';
 import NextSteps from '@/components/results/NextSteps';
@@ -20,76 +29,74 @@ export default async function ResultsPage({ params }) {
 
   const scores = computeScores(lead.answers);
   const state = scores.state;
-  const headline = HEADLINES[state] || '';
   const stateLabel = STATE_LABELS[state] || state;
+  const shortHeadline = SHORT_HEADLINES[state] || '';
+  const headline = HEADLINES[state] || '';
   const videoUrl = STATE_VIDEOS[state];
   const resultsUrl = `${SITE_URL}/results/${id}`;
 
   return (
-    <main className="min-h-screen">
-      <header className="px-5 py-5 sm:px-8">
-        <Logo />
-      </header>
-
-      <div className="mx-auto max-w-2xl px-5 pb-16 sm:px-8">
-        {/* Big reveal */}
-        <section className="rounded-2xl bg-white p-6 sm:p-8 text-navy-700 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange">
-            {lead.first_name}, here's where you're operating from
-          </p>
-          <h1 className="mt-5 text-4xl sm:text-5xl">{stateLabel}</h1>
-
-          <div className="mt-6">
-            <Quadrant state={state} />
-          </div>
-
-          <p className="mt-6 text-base sm:text-lg text-navy-600 max-w-[52ch] mx-auto text-left sm:text-center">
-            {headline}
-          </p>
-        </section>
-
-        {/* State video */}
-        <section className="mt-6">
-          <div className="aspect-video w-full rounded-2xl border border-dashed border-white/25 bg-navy-800 flex items-center justify-center text-center p-6">
-            {videoUrl ? (
-              <video src={videoUrl} controls className="h-full w-full rounded-2xl" />
-            ) : (
-              <p className="text-sm text-white/50">
-                [Video slot: Keith's {stateLabel} state video embeds here. See TODO.md.]
-              </p>
-            )}
-          </div>
-        </section>
-
-        {/* Two edges */}
-        <section className="mt-6 rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-          <h2 className="text-2xl">Which edge are you on</h2>
-          <p className="mt-3 text-navy-600">{TWO_EDGES_COPY.intro}</p>
-          {/* Fog's headline already ends on this exact line; showing it twice on
-              one page reads as a mistake, not emphasis. */}
-          {state !== STATES.FOG && (
-            <p className="mt-3 font-display text-2xl text-navy-700">{TWO_EDGES_COPY.line}</p>
-          )}
-          <p className="mt-3 text-navy-600">{TWO_EDGES_COPY.byState[state]}</p>
-        </section>
-
-        {/* Next steps */}
-        <section className="mt-6">
-          <h2 className="mb-4 text-2xl">What to do next</h2>
-          <NextSteps revenueBand={lead.revenue_band} />
-        </section>
-
-        {/* Contact */}
-        <section className="mt-6 rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-          <h2 className="text-2xl">{CONTACT_COPY.heading}</h2>
-          <p className="mt-3 text-navy-600">{CONTACT_COPY.body}</p>
-        </section>
-
-        {/* Share */}
-        <section className="mt-8 flex justify-center">
-          <ShareButton text={SHARE_COPY.text(stateLabel)} url={resultsUrl} />
-        </section>
+    <main>
+      <div className="site-header container">
+        <div className="brand">
+          <Logo />
+        </div>
       </div>
+
+      <p className="result-confirm">{lead.first_name}, here&rsquo;s where you&rsquo;re operating from</p>
+
+      <div className="result-band">
+        <h1 className="result-state">{stateLabel}</h1>
+      </div>
+
+      <div className="result-body">
+        <p className="transition-line">{shortHeadline}</p>
+        <div className="quadrant-wrap">
+          <Quadrant state={state} />
+        </div>
+        <p className="result-description">{headline}</p>
+        <a
+          href="#next-steps"
+          className="btn btn-orange btn-large"
+        >
+          {CALL_LABELS[state] || 'Book your free call'} &rarr;
+        </a>
+      </div>
+
+      <div className="result-section">
+        <div className="video-frame">
+          {videoUrl ? (
+            <video src={videoUrl} controls />
+          ) : (
+            <p>[Video slot: Keith&rsquo;s {stateLabel} state video embeds here. See TODO.md.]</p>
+          )}
+        </div>
+      </div>
+
+      <div className="result-section">
+        <h2>Which edge are you on</h2>
+        <p className="body-copy">{TWO_EDGES_COPY.intro}</p>
+        {/* Fog's headline already ends on this exact line; showing it twice on
+            one page reads as a mistake, not emphasis. */}
+        {state !== STATES.FOG && <p className="body-copy heading">{TWO_EDGES_COPY.line}</p>}
+        <p className="body-copy">{TWO_EDGES_COPY.byState[state]}</p>
+      </div>
+
+      <div className="result-section" id="next-steps">
+        <h2>What to do next</h2>
+        <NextSteps revenueBand={lead.revenue_band} state={state} />
+      </div>
+
+      <div className="result-section">
+        <h2>{CONTACT_COPY.heading}</h2>
+        <p className="body-copy">{CONTACT_COPY.body}</p>
+      </div>
+
+      <div className="share-row">
+        <ShareButton text={SHARE_COPY.text(stateLabel)} url={resultsUrl} />
+      </div>
+
+      <p className="tagline-footer">Energy is revenue. Focus is profit.</p>
     </main>
   );
 }

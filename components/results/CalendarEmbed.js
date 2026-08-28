@@ -5,7 +5,7 @@ import { LINKS } from '@/lib/config';
 
 export default function CalendarEmbed() {
   return (
-    <div className="mt-5 overflow-hidden rounded-xl border border-navy-100">
+    <div style={{ marginTop: 20, overflow: 'hidden', borderRadius: 12, border: '1px solid var(--card-border)' }}>
       <iframe
         src={LINKS.calendarEmbed}
         style={{ width: '100%', height: 720, border: 'none' }}

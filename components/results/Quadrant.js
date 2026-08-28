@@ -1,64 +1,76 @@
 import { STATE_LABELS, STATES } from '@/lib/quizData';
 
-// A static explainer of the four states, evenly laid out. No score, no position
-// marker, just which one applies, highlighted. (Edge actually needs a stricter
-// bar than the other three to reach: see lib/scoring.js. Now that nothing is
-// plotted by position, that detail doesn't need to show up in the shape.)
-const CELLS = [
-  { state: STATES.FRANTIC, col: 1, row: 1 },
-  { state: STATES.EDGE, col: 2, row: 1 },
-  { state: STATES.FOG, col: 1, row: 2 },
-  { state: STATES.BLOCKED, col: 2, row: 2 },
+// Static explainer of the four states as a 2x2 grid. No score, no position marker,
+// just which quadrant applies (or none, for the landing page teaser where
+// state is null and every box stays muted).
+const QUADRANTS = [
+  { key: STATES.FRANTIC, x: 70, y: 20 },
+  { key: STATES.EDGE, x: 210, y: 20 },
+  { key: STATES.FOG, x: 70, y: 160 },
+  { key: STATES.BLOCKED, x: 210, y: 160 },
 ];
+const QUAD_W = 140;
+const QUAD_H = 140;
 
 export default function Quadrant({ state }) {
   return (
-    <div className="mx-auto w-full max-w-[280px]">
-      <div className="flex items-center justify-center pb-2 pl-9">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300">More energy</span>
-      </div>
+    <svg
+      className="quad-svg"
+      viewBox="0 0 380 340"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label={state ? `Your state: ${STATE_LABELS[state]}` : 'Focus Energy Quadrant'}
+    >
+      {QUADRANTS.map((q) => {
+        const isActive = q.key === state;
+        const cx = q.x + QUAD_W / 2;
+        const cy = q.y + QUAD_H / 2;
+        return (
+          <g key={q.key}>
+            <rect
+              x={q.x}
+              y={q.y}
+              width={QUAD_W}
+              height={QUAD_H}
+              fill={isActive ? 'var(--orange)' : 'var(--navy)'}
+            />
+            <text
+              x={cx}
+              y={cy + 8}
+              textAnchor="middle"
+              fontSize={20}
+              letterSpacing={1}
+              className={isActive ? 'quad-name-active' : 'quad-name-muted'}
+            >
+              {STATE_LABELS[q.key]}
+            </text>
+          </g>
+        );
+      })}
 
-      <div className="flex items-stretch gap-2">
-        <div className="flex w-5 shrink-0 items-center justify-center">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300 [writing-mode:vertical-rl] rotate-180 whitespace-nowrap">
-            Less focus
-          </span>
-        </div>
+      <line x1={70} y1={20} x2={350} y2={20} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
+      <line x1={70} y1={300} x2={350} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
+      <line x1={70} y1={20} x2={70} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
+      <line x1={350} y1={20} x2={350} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
+      <line x1={210} y1={20} x2={210} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
+      <line x1={70} y1={160} x2={350} y2={160} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
 
-        <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-2.5">
-          {CELLS.map((cell) => {
-            const active = cell.state === state;
-            return (
-              <div
-                key={cell.state}
-                className={`flex aspect-square items-center justify-center rounded-2xl border transition-colors ${
-                  active
-                    ? 'border-orange bg-orange/10'
-                    : 'border-navy-100 bg-navy-50'
-                }`}
-              >
-                <span
-                  className={`font-display text-lg tracking-wide sm:text-xl ${
-                    active ? 'text-orange' : 'text-navy-300'
-                  }`}
-                >
-                  {STATE_LABELS[cell.state]}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="flex w-5 shrink-0 items-center justify-center">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300 [writing-mode:vertical-rl] whitespace-nowrap">
-            More focus
-          </span>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-center pt-2 pl-9">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-300">Less energy</span>
-      </div>
-    </div>
+      <text x={70} y={320} fontSize={10} className="quad-axis-label">LOW</text>
+      <text x={350} y={320} textAnchor="end" fontSize={10} className="quad-axis-label">HIGH</text>
+      <text x={210} y={335} textAnchor="middle" fontSize={11} letterSpacing={2} className="quad-axis-label">FOCUS</text>
+      <text x={18} y={26} fontSize={10} className="quad-axis-label">HIGH</text>
+      <text x={18} y={304} fontSize={10} className="quad-axis-label">LOW</text>
+      <text
+        x={14}
+        y={160}
+        textAnchor="middle"
+        fontSize={11}
+        letterSpacing={2}
+        className="quad-axis-label"
+        transform="rotate(-90 14 160)"
+      >
+        ENERGY
+      </text>
+    </svg>
   );
 }

@@ -17,7 +17,7 @@ const inter = Inter({
 export const metadata = {
   title: 'The Founder Energy Quiz | The Energetic Edge',
   description:
-    "Fifteen questions. Three minutes. Find out which state is running your business right now, and what's costing you.",
+    "20 questions. Three minutes. Find out which state is running your business right now, and what's costing you.",
   icons: {
     icon: '/favicon.svg',
   },
@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${bebas.variable} ${inter.variable}`}>
-      <body className="bg-navy-700 font-sans text-white antialiased">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
