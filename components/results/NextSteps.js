@@ -1,13 +1,15 @@
 import TrackedLink from '@/components/TrackedLink';
 import CalendarEmbed from './CalendarEmbed';
+import { CALL_LABELS } from '@/lib/quizData';
 import { LINKS, CALL_COPY, nextStepsDoor, showNewsletterSecondary } from '@/lib/config';
 
-function CallCard({ withEmbed }) {
+function CallCard({ state, withEmbed }) {
+  const label = CALL_LABELS[state] || 'Book your free call';
   return (
-    <div className="rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange">Your free call</p>
-      <h2 className="mt-3 text-3xl">Talk it through with Keith</h2>
-      <p className="mt-3 text-navy-600">{CALL_COPY}</p>
+    <div className="action-card">
+      <p className="eyebrow">Your free call</p>
+      <h3>{label}</h3>
+      <p className="body-copy">{CALL_COPY}</p>
       {withEmbed ? (
         <CalendarEmbed />
       ) : (
@@ -16,9 +18,9 @@ function CallCard({ withEmbed }) {
           href={LINKS.calendarEmbed}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 inline-flex items-center justify-center rounded-lg bg-orange px-6 py-4 font-sans font-bold text-white transition hover:-translate-y-0.5"
+          className="btn btn-orange"
         >
-          Book your free call →
+          {label} &rarr;
         </TrackedLink>
       )}
     </div>
@@ -28,16 +30,10 @@ function CallCard({ withEmbed }) {
 function SecondaryLinks() {
   if (!LINKS.guide && !LINKS.newsletter) return null;
   return (
-    <div className="mt-5 flex flex-wrap gap-3">
+    <div className="secondary-links">
       {LINKS.guide && (
-        <TrackedLink
-          event="guide_download_click"
-          href={LINKS.guide}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg border-[1.5px] border-navy-100 px-5 py-3 text-sm font-bold text-navy-700 transition hover:border-orange"
-        >
-          Get the SIMPLER Guide →
+        <TrackedLink event="guide_download_click" href={LINKS.guide} target="_blank" rel="noopener noreferrer">
+          Get the SIMPLER Guide &rarr;
         </TrackedLink>
       )}
       {LINKS.newsletter && (
@@ -47,48 +43,44 @@ function SecondaryLinks() {
           href={LINKS.newsletter}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-lg border-[1.5px] border-navy-100 px-5 py-3 text-sm font-bold text-navy-700 transition hover:border-orange"
         >
-          Read The Capacity Gap →
+          Read The Capacity Gap &rarr;
         </TrackedLink>
       )}
     </div>
   );
 }
 
-export default function NextSteps({ revenueBand }) {
+export default function NextSteps({ revenueBand, state }) {
   const door = nextStepsDoor(revenueBand);
 
   if (door === 'call_first') {
     return (
-      <div className="flex flex-col gap-5">
-        <CallCard withEmbed />
+      <>
+        <CallCard state={state} withEmbed />
         {showNewsletterSecondary(revenueBand) && (
-          <div className="rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-            <h2 className="text-2xl">Or start with the guide</h2>
-            <p className="mt-2 text-sm text-navy-600">
-              Free, practical, no obligation to book anything.
-            </p>
+          <div className="action-card">
+            <h3>Or start with the guide</h3>
+            <p className="body-copy">Free, practical, no obligation to book anything.</p>
             <SecondaryLinks />
           </div>
         )}
-      </div>
+      </>
     );
   }
 
   // guide_first: SIMPLER Guide + newsletter lead, call is offered below.
   return (
-    <div className="flex flex-col gap-5">
-      <div className="rounded-2xl bg-white p-6 sm:p-8 text-navy-700">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange">Start here</p>
-        <h2 className="mt-3 text-3xl">Get the SIMPLER Guide</h2>
-        <p className="mt-3 text-navy-600">
-          A practical framework for founders who need more from their days without adding more to
-          their plate.
+    <>
+      <div className="action-card">
+        <p className="eyebrow">Start here</p>
+        <h3>Get the SIMPLER Guide</h3>
+        <p className="body-copy">
+          A practical framework for founders who need more from their days without adding more to their plate.
         </p>
         <SecondaryLinks />
       </div>
-      <CallCard withEmbed={false} />
-    </div>
+      <CallCard state={state} withEmbed={false} />
+    </>
   );
 }

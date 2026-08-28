@@ -1,21 +1,17 @@
 import Logo from '@/components/Logo';
 import TrackEvent from '@/components/TrackEvent';
 import TrackedLink from '@/components/TrackedLink';
+import Quadrant from '@/components/results/Quadrant';
 
-// Two frustration angles to split test against each other, not a frustration-vs-
-// readiness pair. Default is "know what to do, can't do it"; ?v=ready is "the
-// business looks fine, I don't" (kept the same param name so existing links and
-// tracking meta don't need to change).
+// Two frustration angles to split test against each other. Default is "know what
+// to do, can't do it"; ?v=ready is "the business looks fine, I don't" (kept the
+// same param name so existing links and tracking meta don't need to change).
 const HOOKS = {
   frustration: {
-    eyebrow: '15 questions · 3 minutes · no fluff',
     heading: "Are you frustrated that you know exactly what you should be doing, even though you never seem to do it?",
-    body: "You've got the plan. You know the next move. And somehow the day still gets away from you before you touch it. That's not a discipline problem, whatever it feels like at 11pm. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
   },
   ready: {
-    eyebrow: '15 questions · 3 minutes · no fluff',
     heading: "Are you frustrated that you're running on empty, even though the business is doing well?",
-    body: "From the outside, it looks like it's working. From the inside, you're not sure how much longer you can keep doing it this way. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
   },
 };
 
@@ -25,79 +21,136 @@ export default async function LandingPage({ searchParams }) {
   const hook = HOOKS[variant];
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main>
       <TrackEvent event="landing_view" meta={{ variant }} />
 
-      <header className="px-5 py-5 sm:px-8">
-        <Logo />
-      </header>
-
-      {/* Hook */}
-      <section className="px-5 sm:px-8 pt-6 pb-10 sm:pt-10 sm:pb-14">
-        <div className="mx-auto max-w-xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange">{hook.eyebrow}</p>
-          <h1 className="mt-4 text-[42px] leading-[0.95] sm:text-6xl">{hook.heading}</h1>
-          <p className="mt-5 text-base sm:text-lg text-white/80 max-w-[42ch]">{hook.body}</p>
-          <div className="mt-8">
-            <TrackedLink
-              event="quiz_start_click"
-              meta={{ variant, location: 'hero' }}
-              href="/quiz"
-              className="inline-flex items-center justify-center rounded-lg bg-orange px-7 py-4 font-sans font-bold text-white transition hover:-translate-y-0.5"
-            >
-              Start the quiz →
-            </TrackedLink>
-            <p className="mt-3 text-xs uppercase tracking-[0.1em] text-white/50">
-              Free. 3 minutes. Straight to the point.
-            </p>
+      <section>
+        <div className="site-header container">
+          <div className="brand">
+            <Logo />
           </div>
         </div>
-      </section>
 
-      {/* Value proposition */}
-      <section className="bg-navy-800 px-5 sm:px-8 py-12 sm:py-16">
-        <div className="mx-auto max-w-xl">
-          <h2 className="text-3xl sm:text-4xl">Energy is revenue. Focus is profit.</h2>
-          <p className="mt-4 text-base sm:text-lg text-white/80 max-w-[46ch]">
-            The quiz measures the two things that actually determine how you perform: your energy and your
-            focus. You'll get your state and the one thing to fix first.
+        <div className="hero container">
+          <p className="eyebrow">The Founder Energy Quiz</p>
+          <h1 className="hero-headline">{hook.heading}</h1>
+          <p className="hero-sub">
+            Take the free Founder Energy Quiz. 20 questions, 3 minutes, and you'll know exactly which of the
+            four founder States you're running your business from, and the first thing to change.
           </p>
+          <TrackedLink
+            event="quiz_start_click"
+            meta={{ variant, location: 'hero' }}
+            href="/quiz"
+            className="btn btn-orange"
+          >
+            Take Quiz
+          </TrackedLink>
+          <p className="microcopy">Free. 3 minutes. Specific to you.</p>
         </div>
       </section>
 
-      {/* Credibility */}
-      <section className="px-5 sm:px-8 py-12 sm:py-16">
-        <div className="mx-auto max-w-xl">
-          <h2 className="text-3xl sm:text-4xl">Built by someone who runs the numbers on this for a living</h2>
-          <p className="mt-4 text-base sm:text-lg text-white/80 max-w-[46ch]">
-            Keith West built The Energetic Edge working 1:1 with founders running six and seven-figure service
-            businesses: the ones carrying the whole operation in their head, running on adrenaline and caffeine,
-            and stuck on why it feels harder than it used to.
-          </p>
-          <p className="mt-4 text-sm text-white/50 max-w-[46ch]">
-            [ADD REAL CREDIBILITY STAT: e.g. number of founders taken through the quiz or programme, or a
-            measurable outcome. See TODO.md.]
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-navy-800 px-5 sm:px-8 py-14 sm:py-20 mt-auto">
-        <div className="mx-auto max-w-xl text-center sm:text-left">
-          <h2 className="text-3xl sm:text-4xl">Find out what's actually running your business.</h2>
-          <p className="mt-3 text-base text-white/80">Free. Three minutes. Straight to the point.</p>
-          <div className="mt-7">
-            <TrackedLink
-              event="quiz_start_click"
-              meta={{ variant, location: 'footer' }}
-              href="/quiz"
-              className="inline-flex items-center justify-center rounded-lg bg-orange px-7 py-4 font-sans font-bold text-white transition hover:-translate-y-0.5"
-            >
-              Start the quiz →
-            </TrackedLink>
+      <div className="discover tee-section">
+        <div className="container">
+          <p className="eyebrow">What You'll Discover</p>
+          <h2>Two answers you've been guessing at.</h2>
+          <div className="discover-list">
+            <div className="discover-item">
+              <div className="num">01</div>
+              <h3>Your State</h3>
+              <p>
+                Which of the four founder States you're running your business from, measured on the two axes
+                that decide your output: focus and energy.
+              </p>
+            </div>
+            <div className="discover-item">
+              <div className="num">02</div>
+              <h3>Your first move</h3>
+              <p>The one thing to change first in your State. Specific to your result, not generic advice.</p>
+            </div>
           </div>
+          <TrackedLink
+            event="quiz_start_click"
+            meta={{ variant, location: 'discover' }}
+            href="/quiz"
+            className="btn btn-orange"
+          >
+            Take Quiz
+          </TrackedLink>
+          <p className="microcopy">20 questions. No right answers, just honest ones.</p>
         </div>
-      </section>
+      </div>
+
+      <div className="states-teaser tee-section">
+        <div className="container">
+          <h2>Every founder is running their business from one of four States.</h2>
+          <div className="quadrant-teaser-wrap">
+            <Quadrant state={null} />
+          </div>
+
+          <div className="states-grid">
+            <div className="state-card">
+              <div className="state-name">Frantic</div>
+              <p>Low focus, high energy. Moving fast, not necessarily forward.</p>
+            </div>
+            <div className="state-card">
+              <div className="state-name">Edge</div>
+              <p>High focus, high energy. Energised, directed, grounded, engaged. Few founders score here.</p>
+            </div>
+            <div className="state-card">
+              <div className="state-name">Fog</div>
+              <p>Low focus, low energy. Everything feels heavy and nothing feels clear.</p>
+            </div>
+            <div className="state-card">
+              <div className="state-name">Blocked</div>
+              <p>High focus, low energy. You know exactly what to do. You just can't get to it.</p>
+            </div>
+          </div>
+
+          <p className="teaser-note">Most founders guess wrong about which one they're in.</p>
+          <TrackedLink
+            event="quiz_start_click"
+            meta={{ variant, location: 'states_teaser' }}
+            href="/quiz"
+            className="btn btn-orange"
+          >
+            Find Out Which One I'm In
+          </TrackedLink>
+        </div>
+      </div>
+
+      <div className="cta-band tee-section">
+        <div className="container">
+          <h2>Three minutes. No right answers. Just honest ones.</h2>
+          <TrackedLink
+            event="quiz_start_click"
+            meta={{ variant, location: 'cta_band' }}
+            href="/quiz"
+            className="btn btn-navy"
+          >
+            Take the Quiz Now
+          </TrackedLink>
+          <p className="microcopy">Free. Specific to you.</p>
+        </div>
+      </div>
+
+      <footer className="site-footer">
+        <div className="brand">
+          <Logo />
+        </div>
+        <p className="footer-tagline">Energy is revenue. Focus is profit.</p>
+        <div className="social-links">
+          <a href="https://www.linkedin.com/in/keith-west-3aa88b50/" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <a href="https://www.instagram.com/keithwest._/" target="_blank" rel="noopener noreferrer">
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61575171456174" target="_blank" rel="noopener noreferrer">
+            Facebook
+          </a>
+        </div>
+      </footer>
     </main>
   );
 }

@@ -4,6 +4,12 @@ module.exports = {
     './app/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
   ],
+  // The ported design system (app/globals.css) defines its own .container,
+  // matching a specific max-width/padding contract components rely on by name.
+  // Tailwind's default container utility would otherwise collide with it.
+  corePlugins: {
+    container: false,
+  },
   theme: {
     extend: {
       colors: {

@@ -22,11 +22,7 @@ export default function ShareButton({ text, url }) {
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleShare}
-      className="rounded-lg border-[1.5px] border-navy-100 px-6 py-3 text-sm font-bold text-navy-700 transition hover:border-orange"
-    >
+    <button type="button" onClick={handleShare} className="btn btn-outline">
       {copied ? 'Copied to clipboard' : 'Share your result'}
     </button>
   );
