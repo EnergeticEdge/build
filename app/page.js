@@ -2,16 +2,20 @@ import Logo from '@/components/Logo';
 import TrackEvent from '@/components/TrackEvent';
 import TrackedLink from '@/components/TrackedLink';
 
+// Two frustration angles to split test against each other, not a frustration-vs-
+// readiness pair. Default is "know what to do, can't do it"; ?v=ready is "the
+// business looks fine, I don't" (kept the same param name so existing links and
+// tracking meta don't need to change).
 const HOOKS = {
   frustration: {
     eyebrow: '15 questions · 3 minutes · no fluff',
-    heading: "You're not lazy. You've just run out of fuel.",
-    body: "You've tried the better calendar, the earlier alarm, the new app. All useful. None of it touched the real problem. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
+    heading: "Are you frustrated that you know exactly what you should be doing, even though you never seem to do it?",
+    body: "You've got the plan. You know the next move. And somehow the day still gets away from you before you touch it. That's not a discipline problem, whatever it feels like at 11pm. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
   },
   ready: {
     eyebrow: '15 questions · 3 minutes · no fluff',
-    heading: "You're doing fine. You want to know how far fine can go.",
-    body: "You're not falling apart, and this isn't that kind of quiz. It's for finding out whether the version of you running this business right now is close to its ceiling, or nowhere near it.",
+    heading: "Are you frustrated that you're running on empty, even though the business is doing well?",
+    body: "From the outside, it looks like it's working. From the inside, you're not sure how much longer you can keep doing it this way. Fifteen questions tell you what's actually running your business right now, and what to fix first.",
   },
 };
 
@@ -53,11 +57,10 @@ export default async function LandingPage({ searchParams }) {
       {/* Value proposition */}
       <section className="bg-navy-800 px-5 sm:px-8 py-12 sm:py-16">
         <div className="mx-auto max-w-xl">
-          <h2 className="text-3xl sm:text-4xl">Energy is revenue. Focus is profit. Capacity is your asset.</h2>
+          <h2 className="text-3xl sm:text-4xl">Energy is revenue. Focus is profit.</h2>
           <p className="mt-4 text-base sm:text-lg text-white/80 max-w-[46ch]">
-            The quiz measures the three things that actually determine how you perform: your energy, your focus,
-            and your capacity to carry what the business is asking of you right now. You'll get a score, a state,
-            and the one thing to fix first.
+            The quiz measures the two things that actually determine how you perform: your energy and your
+            focus. You'll get your state and the one thing to fix first.
           </p>
         </div>
       </section>
