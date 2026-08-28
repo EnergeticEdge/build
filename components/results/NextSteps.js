@@ -1,7 +1,7 @@
 import TrackedLink from '@/components/TrackedLink';
 import CalendarEmbed from './CalendarEmbed';
 import { CALL_LABELS } from '@/lib/quizData';
-import { LINKS, CALL_COPY, nextStepsDoor, showNewsletterSecondary } from '@/lib/config';
+import { LINKS, CALL_COPY, CALL_PRICE, nextStepsDoor, showNewsletterSecondary } from '@/lib/config';
 
 function CallCard({ state, withEmbed }) {
   const label = CALL_LABELS[state] || 'Book your free call';
@@ -9,6 +9,10 @@ function CallCard({ state, withEmbed }) {
     <div className="action-card">
       <p className="eyebrow">Your free call</p>
       <h3>{label}</h3>
+      <div className="price-tag">
+        <span className="was">{CALL_PRICE.was}</span>
+        <span className="now">{CALL_PRICE.now}</span>
+      </div>
       <p className="body-copy">{CALL_COPY}</p>
       {withEmbed ? (
         <CalendarEmbed />
@@ -44,7 +48,7 @@ function SecondaryLinks() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Read The Capacity Gap &rarr;
+          Sign Up to The Capacity Gap &rarr;
         </TrackedLink>
       )}
     </div>
@@ -60,8 +64,11 @@ export default function NextSteps({ revenueBand, state }) {
         <CallCard state={state} withEmbed />
         {showNewsletterSecondary(revenueBand) && (
           <div className="action-card">
-            <h3>Or start with the guide</h3>
-            <p className="body-copy">Free, practical, no obligation to book anything.</p>
+            <h3>Stay In Touch</h3>
+            <p className="body-copy">
+              Sign up to The Capacity Gap, Keith's newsletter on energy, focus and running a business without
+              running yourself into the ground. No obligation to book anything.
+            </p>
             <SecondaryLinks />
           </div>
         )}

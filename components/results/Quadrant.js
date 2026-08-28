@@ -1,16 +1,20 @@
 import { STATE_LABELS, STATES } from '@/lib/quizData';
 
-// Static explainer of the four states as a 2x2 grid. No score, no position marker,
-// just which quadrant applies (or none, for the landing page teaser where
-// state is null and every box stays muted).
+// Static explainer of the four states as a 2x2 grid of separate rounded tiles
+// with a gutter between them, rather than one filled grid with lines drawn over
+// it — reads as four cards, not a spreadsheet. No score, no position marker; the
+// gap itself marks the axes. State is null on the landing page teaser, where
+// every tile stays muted.
+const GAP = 14;
+const BOUNDS = { x: 70, y: 20, size: 280 };
+const TILE = (BOUNDS.size - GAP) / 2;
+
 const QUADRANTS = [
-  { key: STATES.FRANTIC, x: 70, y: 20 },
-  { key: STATES.EDGE, x: 210, y: 20 },
-  { key: STATES.FOG, x: 70, y: 160 },
-  { key: STATES.BLOCKED, x: 210, y: 160 },
+  { key: STATES.FRANTIC, x: BOUNDS.x, y: BOUNDS.y },
+  { key: STATES.EDGE, x: BOUNDS.x + TILE + GAP, y: BOUNDS.y },
+  { key: STATES.FOG, x: BOUNDS.x, y: BOUNDS.y + TILE + GAP },
+  { key: STATES.BLOCKED, x: BOUNDS.x + TILE + GAP, y: BOUNDS.y + TILE + GAP },
 ];
-const QUAD_W = 140;
-const QUAD_H = 140;
 
 export default function Quadrant({ state }) {
   return (
@@ -21,24 +25,37 @@ export default function Quadrant({ state }) {
       role="img"
       aria-label={state ? `Your state: ${STATE_LABELS[state]}` : 'Focus Energy Quadrant'}
     >
+      <defs>
+        <linearGradient id="quadActiveFill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ff8a3d" />
+          <stop offset="100%" stopColor="#ff6a00" />
+        </linearGradient>
+        <filter id="quadActiveGlow" x="-60%" y="-60%" width="220%" height="220%">
+          <feDropShadow dx="0" dy="8" stdDeviation="10" floodColor="#ff6a00" floodOpacity="0.4" />
+        </filter>
+      </defs>
+
       {QUADRANTS.map((q) => {
         const isActive = q.key === state;
-        const cx = q.x + QUAD_W / 2;
-        const cy = q.y + QUAD_H / 2;
+        const cx = q.x + TILE / 2;
+        const cy = q.y + TILE / 2;
         return (
-          <g key={q.key}>
+          <g key={q.key} filter={isActive ? 'url(#quadActiveGlow)' : undefined}>
             <rect
               x={q.x}
               y={q.y}
-              width={QUAD_W}
-              height={QUAD_H}
-              fill={isActive ? 'var(--orange)' : 'var(--navy)'}
+              width={TILE}
+              height={TILE}
+              rx={18}
+              fill={isActive ? 'url(#quadActiveFill)' : 'rgba(255,255,255,0.04)'}
+              stroke={isActive ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'}
+              strokeWidth={1}
             />
             <text
               x={cx}
-              y={cy + 8}
+              y={cy + (isActive ? 9 : 8)}
               textAnchor="middle"
-              fontSize={20}
+              fontSize={isActive ? 23 : 18}
               letterSpacing={1}
               className={isActive ? 'quad-name-active' : 'quad-name-muted'}
             >
@@ -47,13 +64,6 @@ export default function Quadrant({ state }) {
           </g>
         );
       })}
-
-      <line x1={70} y1={20} x2={350} y2={20} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
-      <line x1={70} y1={300} x2={350} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
-      <line x1={70} y1={20} x2={70} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
-      <line x1={350} y1={20} x2={350} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
-      <line x1={210} y1={20} x2={210} y2={300} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
-      <line x1={70} y1={160} x2={350} y2={160} stroke="rgba(255,255,255,0.18)" strokeWidth={1} />
 
       <text x={70} y={320} fontSize={10} className="quad-axis-label">LOW</text>
       <text x={350} y={320} textAnchor="end" fontSize={10} className="quad-axis-label">HIGH</text>

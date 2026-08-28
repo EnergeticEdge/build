@@ -3,26 +3,10 @@ import TrackEvent from '@/components/TrackEvent';
 import TrackedLink from '@/components/TrackedLink';
 import Quadrant from '@/components/results/Quadrant';
 
-// Two frustration angles to split test against each other. Default is "know what
-// to do, can't do it"; ?v=ready is "the business looks fine, I don't" (kept the
-// same param name so existing links and tracking meta don't need to change).
-const HOOKS = {
-  frustration: {
-    heading: "Are you frustrated that you know exactly what you should be doing, even though you never seem to do it?",
-  },
-  ready: {
-    heading: "Are you frustrated that you're running on empty, even though the business is doing well?",
-  },
-};
-
-export default async function LandingPage({ searchParams }) {
-  const params = await searchParams;
-  const variant = params?.v === 'ready' ? 'ready' : 'frustration';
-  const hook = HOOKS[variant];
-
+export default async function LandingPage() {
   return (
     <main>
-      <TrackEvent event="landing_view" meta={{ variant }} />
+      <TrackEvent event="landing_view" />
 
       <section>
         <div className="site-header container">
@@ -33,17 +17,15 @@ export default async function LandingPage({ searchParams }) {
 
         <div className="hero container">
           <p className="eyebrow">The Founder Energy Quiz</p>
-          <h1 className="hero-headline">{hook.heading}</h1>
+          <h1 className="hero-headline">
+            Are <span className="accent">you</span> <span className="accent">frustrated</span> that the
+            business is performing better than <span className="accent">you</span> are?
+          </h1>
           <p className="hero-sub">
-            Take the free Founder Energy Quiz. 20 questions, 3 minutes, and you'll know exactly which of the
-            four founder States you're running your business from, and the first thing to change.
+            Revenue's fine. You're not. Twenty questions, three minutes, and you'll know which state is
+            running your business, and the first thing to fix.
           </p>
-          <TrackedLink
-            event="quiz_start_click"
-            meta={{ variant, location: 'hero' }}
-            href="/quiz"
-            className="btn btn-orange"
-          >
+          <TrackedLink event="quiz_start_click" meta={{ location: 'hero' }} href="/quiz" className="btn btn-orange">
             Take Quiz
           </TrackedLink>
           <p className="microcopy">Free. 3 minutes. Specific to you.</p>
@@ -71,7 +53,7 @@ export default async function LandingPage({ searchParams }) {
           </div>
           <TrackedLink
             event="quiz_start_click"
-            meta={{ variant, location: 'discover' }}
+            meta={{ location: 'discover' }}
             href="/quiz"
             className="btn btn-orange"
           >
@@ -110,7 +92,7 @@ export default async function LandingPage({ searchParams }) {
           <p className="teaser-note">Most founders guess wrong about which one they're in.</p>
           <TrackedLink
             event="quiz_start_click"
-            meta={{ variant, location: 'states_teaser' }}
+            meta={{ location: 'states_teaser' }}
             href="/quiz"
             className="btn btn-orange"
           >
@@ -124,7 +106,7 @@ export default async function LandingPage({ searchParams }) {
           <h2>Three minutes. No right answers. Just honest ones.</h2>
           <TrackedLink
             event="quiz_start_click"
-            meta={{ variant, location: 'cta_band' }}
+            meta={{ location: 'cta_band' }}
             href="/quiz"
             className="btn btn-navy"
           >

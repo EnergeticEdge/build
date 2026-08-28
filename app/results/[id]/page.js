@@ -5,9 +5,8 @@ import {
   HEADLINES,
   SHORT_HEADLINES,
   CALL_LABELS,
-  STATES,
   STATE_LABELS,
-  TWO_EDGES_COPY,
+  EDGE_BACK_COPY,
   CONTACT_COPY,
   SHARE_COPY,
 } from '@/lib/quizData';
@@ -74,12 +73,11 @@ export default async function ResultsPage({ params }) {
       </div>
 
       <div className="result-section">
-        <h2>Which edge are you on</h2>
-        <p className="body-copy">{TWO_EDGES_COPY.intro}</p>
-        {/* Fog's headline already ends on this exact line; showing it twice on
-            one page reads as a mistake, not emphasis. */}
-        {state !== STATES.FOG && <p className="body-copy heading">{TWO_EDGES_COPY.line}</p>}
-        <p className="body-copy">{TWO_EDGES_COPY.byState[state]}</p>
+        <h2>{EDGE_BACK_COPY.heading}</h2>
+        <p className="body-copy">{EDGE_BACK_COPY.body}</p>
+        <a href="#next-steps" className="btn btn-orange">
+          {CALL_LABELS[state] || 'Book your free call'} &rarr;
+        </a>
       </div>
 
       <div className="result-section" id="next-steps">
