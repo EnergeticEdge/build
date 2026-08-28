@@ -159,6 +159,7 @@ p,
   font-size: clamp(2.2rem, 7vw, 3.8rem);
   max-width: 900px;
   margin: 24px auto 22px;
+  color: var(--white);
 }
 .hero-headline .accent {
   color: var(--orange);
@@ -222,8 +223,14 @@ p,
   margin: 0 auto 48px;
 }
 .quadrant-teaser-wrap {
-  max-width: 420px;
+  max-width: 460px;
   margin: 0 auto 40px;
+  padding: 28px 22px;
+  border-radius: 26px;
+  border: 1px solid var(--card-border);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 106, 0, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 55%);
 }
 
 .states-grid {
@@ -566,8 +573,14 @@ p,
   margin-bottom: 32px;
 }
 .quadrant-wrap {
-  max-width: 360px;
+  max-width: 400px;
   margin: 0 auto 32px;
+  padding: 24px 18px;
+  border-radius: 26px;
+  border: 1px solid var(--card-border);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 106, 0, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 55%);
 }
 .result-description {
   color: var(--muted);
@@ -592,6 +605,9 @@ p,
 }
 .result-section .body-copy + .body-copy {
   margin-top: 12px;
+}
+.result-section > .btn {
+  margin-top: 20px;
 }
 .video-frame {
   aspect-ratio: 16 / 9;
@@ -631,6 +647,24 @@ p,
 }
 .action-card .body-copy {
   margin-bottom: 20px;
+}
+.price-tag {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.price-tag .was {
+  color: var(--muted);
+  text-decoration: line-through;
+  font-size: 1.1rem;
+}
+.price-tag .now {
+  font-family: var(--font-bebas), sans-serif;
+  color: var(--orange);
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
 .secondary-links {
   display: flex;

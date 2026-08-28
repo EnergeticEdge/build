@@ -1,12 +1,12 @@
-// White-on-navy variant, derived from the real logo (navy swapped for white,
-// orange unchanged) since every page this appears on sits on the navy background
-// and the brand overview calls for a white version there.
+// Coloured icon (navy triangle + orange arrow), white wordmark text: the navy
+// icon still reads clearly against the app's dark navy background, and white
+// keeps the "THE ENERGETIC EDGE" text legible rather than blending into it.
 export default function Logo({ className = '' }) {
   return (
     <img
-      src="/assets/logo-side-white.svg"
+      src="/assets/logo-side-dark-bg.svg"
       alt="The Energetic Edge"
-      className={`h-6 w-auto sm:h-7 ${className}`}
+      className={`h-9 w-auto sm:h-11 ${className}`}
     />
   );
 }
