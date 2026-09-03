@@ -214,6 +214,39 @@ p,
   margin: 0;
 }
 
+.paths-section {
+  text-align: center;
+}
+.paths-section h2 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  margin-bottom: 40px;
+}
+.paths-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+@media (min-width: 700px) {
+  .paths-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.paths-grid .action-card {
+  display: flex;
+  flex-direction: column;
+}
+.coming-soon {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+}
+
 .states-teaser {
   text-align: center;
 }

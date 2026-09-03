@@ -32,6 +32,53 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      <div className="paths-section tee-section">
+        <div className="container">
+          <h2>Where do you want to start?</h2>
+          <div className="paths-grid">
+            <div className="action-card">
+              <p className="eyebrow">For serious founders</p>
+              <h3>Apply for Your 1:1</h3>
+              <p className="body-copy">Ready to work with Keith directly? Applications are opening soon.</p>
+              <span className="coming-soon">Coming soon</span>
+            </div>
+
+            <div className="action-card">
+              <p className="eyebrow">Start here</p>
+              <h3>Book a Clarity Call</h3>
+              <p className="body-copy">
+                A free 30-minute call with Keith. He'll read your situation and give you one focused action.
+              </p>
+              <TrackedLink event="call_booked_click" meta={{ location: 'paths' }} href="/call" className="btn btn-orange">
+                Book Your Call &rarr;
+              </TrackedLink>
+            </div>
+
+            <div className="action-card">
+              <p className="eyebrow">3 minutes</p>
+              <h3>Take the Founder Energy Quiz</h3>
+              <p className="body-copy">
+                20 questions. Find out which of the four founder States is running your business, and the first
+                thing to fix.
+              </p>
+              <TrackedLink event="quiz_start_click" meta={{ location: 'paths' }} href="/quiz" className="btn btn-orange">
+                Take Quiz &rarr;
+              </TrackedLink>
+            </div>
+
+            <div className="action-card">
+              <p className="eyebrow">Free framework</p>
+              <h3>Get the SIMPLER Guide</h3>
+              <p className="body-copy">
+                A practical framework for founders who need more from their days without adding more to their
+                plate.
+              </p>
+              <span className="coming-soon">Coming soon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="discover tee-section">
         <div className="container">
           <p className="eyebrow">What You'll Discover</p>

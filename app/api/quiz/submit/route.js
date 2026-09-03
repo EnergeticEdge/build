@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { computeScores } from '@/lib/scoring';
 import { insertLead, markBeehiivSynced, logEvent } from '@/lib/db';
 import { ensureCustomFields, upsertSubscriber, AUTOMATION_TRIGGER_FIELD } from '@/lib/beehiiv';
+import { sendToGHL } from '@/lib/ghl';
 import { SITE_URL } from '@/lib/config';
 import { REVENUE_QUESTION, OUTCOME_QUESTION, OBSTACLE_QUESTION, NOTES_QUESTION } from '@/lib/quizData';
 
@@ -73,6 +74,21 @@ export async function POST(request) {
   } catch (err) {
     console.error('Beehiiv sync failed for lead', leadId, err.message);
     await markBeehiivSynced(leadId, false, err.message).catch(() => {});
+  }
+
+  // GHL is the primary CRM destination and runs the state-specific email sequences.
+  // Same shape as the Beehiiv block above: best-effort, fully independent, never
+  // affects the response the user gets.
+  try {
+    await sendToGHL({
+      email: contact.email,
+      firstName: contact.firstName,
+      phone: contact.phone,
+      state,
+      completedAt: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.error('GHL sync failed for lead', leadId, err.message);
   }
 
   logEvent('quiz_complete', { leadId, state, score: scores.totalPct }).catch(() => {});
