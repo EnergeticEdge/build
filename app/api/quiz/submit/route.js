@@ -86,6 +86,7 @@ export async function POST(request) {
       phone: contact.phone,
       state,
       completedAt: new Date().toISOString(),
+      source: 'feq-quiz',
     });
   } catch (err) {
     console.error('GHL sync failed for lead', leadId, err.message);

@@ -73,7 +73,9 @@ export default async function LandingPage() {
                 A practical framework for founders who need more from their days without adding more to their
                 plate.
               </p>
-              <span className="coming-soon">Coming soon</span>
+              <TrackedLink event="guide_download_click" meta={{ location: 'paths' }} href="/guide" className="btn btn-orange">
+                Get The Guide &rarr;
+              </TrackedLink>
             </div>
           </div>
         </div>
