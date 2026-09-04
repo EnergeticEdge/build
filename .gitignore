@@ -3,3 +3,11 @@ node_modules/
 .env
 .env.local
 .next/
+
+# stock_picker
+stock_picker/output/
+stock_picker/__pycache__/
+stock_picker/**/__pycache__/
+*.pyc
+.venv/
+venv/
