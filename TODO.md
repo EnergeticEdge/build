@@ -100,8 +100,12 @@ as something to celebrate and build on, never as a warning.
 
 1. **Four state videos** (Edge / Frantic / Fog / Blocked). `lib/config.js` → `STATE_VIDEOS` is
    `null` for all four. The results page shows a labelled placeholder box until set.
-2. **SIMPLER Guide link.** No link was supplied. `lib/config.js` → `LINKS.guide` is `null`, which
-   makes every "Get the SIMPLER Guide" CTA hide itself. Set the real URL and those CTAs reappear.
+2. ~~SIMPLER Guide link~~ — done. `LINKS.guide` now points at `/guide`, a gated capture page
+   (`app/guide/page.js` + `app/api/guide/download/route.js`) that saves to its own
+   `guide_downloads` backup table, syncs to Beehiiv and GHL the same independent, best-effort way
+   as the quiz, then reveals a real download button for `public/assets/simpler-guide.pdf`. This
+   is the final, correct guide Keith supplied — there had been two conflicting versions floating
+   around before this.
 3. **Email 7 (`emails/07-the-real-cost.md`).** Uses the real, sourced £26,000-£52,000/year range
    from the ICP doc's Capacity Cost Read, but leaves a placeholder for a specific real example.
 4. **Email 8 (`emails/08-client-story.md`).** Entirely a placeholder — no real client story exists
