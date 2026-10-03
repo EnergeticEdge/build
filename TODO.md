@@ -80,6 +80,13 @@ lines, and the Entry 05 condition reading. Then a print/save-as-PDF button, and 
   were rewritten. The hourly-rate note said "across 13 weeks" but the maths divides by a 46-week
   year, so the note now says that. Fixed a bug where a £0 total showed "£0 in 90 days. That is a
   leak". Body font is Inter (the app's), not the original's DM Sans.
+- Branding pass: colours come from the app's own tokens (`--navy-dark`, `--orange`), buttons use
+  the site's `.btn` classes, the CTA is the "Clarity Call" with the same £197/Free price tag as
+  `/call`, the logo sits in the footer as well as the header, and the page gutter never drops
+  below the site's 24px. `public/assets/og-ledger.png` is the LinkedIn/social share card, matching
+  the existing `og-image.png` style; it relies on `NEXT_PUBLIC_SITE_URL` for its absolute URL.
+  The footer tagline keeps Keith's third line, "Capacity is your asset", which the rest of the
+  site doesn't use.
 - Still to do: no follow-up email sequence exists for ledger leads yet (trigger it in Beehiiv on
   `ledger_completed`), and nothing links to `/ledger` from the homepage or results page yet.
 

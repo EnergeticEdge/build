@@ -3,10 +3,11 @@
    uses Inter (the app's font) rather than the original page's DM Sans. */
 
 .cl {
-  --cl-ink: #04162b;
+  /* Brand tokens come from globals.css so the ledger matches the rest of the funnel. */
+  --cl-ink: var(--navy-dark);
   --cl-hull: #08284a;
   --cl-rule: #14456f;
-  --cl-ember: #ff6a00;
+  --cl-ember: var(--orange);
   --cl-bone: #f2f6fa;
   --cl-mute: #8ba7c4;
   --cl-display: var(--font-bebas), 'Arial Narrow', sans-serif;
@@ -17,15 +18,16 @@
   min-height: 100vh;
 }
 
-.cl-wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+/* Gutter never drops below the site's 24px, and opens up on wider screens. */
+.cl-wrap { max-width: 1168px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 56px); }
 
 .cl .site-header { padding-top: 28px; }
 
 /* ---------- masthead ---------- */
 .cl-masthead { padding: 56px 0 56px; border-bottom: 1px solid var(--cl-rule); }
 .cl-eyebrow {
-  font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--cl-ember); font-weight: 500; margin-bottom: 20px;
+  font-size: 0.78rem; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--cl-ember); font-weight: 700; margin-bottom: 20px;
   padding-left: 16px; border-left: 3px solid var(--cl-ember);
 }
 .cl h1 {
@@ -103,11 +105,7 @@
 .cl-what { font-size: 15px; color: var(--cl-bone); flex: 1 1 260px; }
 .cl-fig { font-family: var(--cl-display); font-size: 26px; color: var(--cl-ember); font-variant-numeric: tabular-nums; }
 
-.cl-print {
-  margin-top: 28px; background: none; border: 1px solid var(--cl-rule); color: var(--cl-bone);
-  font-size: 14px; padding: 11px 18px; border-radius: 2px; cursor: pointer;
-}
-.cl-print:hover { border-color: var(--cl-mute); }
+.cl-print { margin-top: 28px; padding: 14px 28px; font-size: 0.95rem; }
 
 .cl-gate { background: var(--cl-hull); border-left: 3px solid var(--cl-ember); padding: 28px; margin-top: 26px; max-width: 680px; }
 .cl-gate-lead { font-size: 17px; color: var(--cl-bone); max-width: 58ch; }
@@ -128,17 +126,16 @@
 .cl-close { border-top: 1px solid var(--cl-rule); margin-top: 48px; padding-top: 52px; padding-bottom: 80px; }
 .cl-kicker { font-family: var(--cl-display); font-size: clamp(30px, 4.4vw, 46px); color: #fff; line-height: 1.02; max-width: 20ch; letter-spacing: 0.02em; }
 .cl-close p { margin-top: 20px; color: var(--cl-mute); max-width: 56ch; }
-.cl-cta {
-  display: inline-block; margin-top: 28px; background: var(--cl-ember); color: #1a0a00; border: none; cursor: pointer;
-  font-weight: 700; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 15px 30px; text-decoration: none; border-radius: 2px;
-}
-.cl-cta:hover { background: #ff8128; }
-.cl-cta:disabled { opacity: 0.6; cursor: wait; }
+/* Buttons use the site's .btn / .btn-orange; this only adds spacing and states. */
+.cl-cta { margin-top: 28px; }
+.cl-cta:disabled { opacity: 0.6; cursor: wait; transform: none; }
 .cl-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.cl-close .price-tag { margin: 28px 0 0; }
+.cl-close .price-tag + .cl-cta { margin-top: 14px; }
 .cl-foot { margin-top: 56px; border-top: 1px solid var(--cl-rule); padding-top: 34px; }
-.cl-tag { color: var(--cl-bone); font-weight: 500; font-size: 15px; }
-.cl-smallprint { font-size: 13px; color: #5f7fa0; margin-top: 10px; max-width: 62ch; }
+.cl-foot img { height: 40px; width: auto; }
+.cl-close .cl-tag { color: var(--cl-bone); font-weight: 500; font-size: 15px; margin-top: 22px; }
+.cl-close .cl-smallprint { font-size: 13px; color: #5f7fa0; margin-top: 10px; max-width: 62ch; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
@@ -147,15 +144,15 @@
     position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20;
     border-top: 2px solid var(--cl-ember); background: var(--cl-hull);
   }
-  .cl-balancecard { border: none; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .cl-balancecard { border: none; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .cl-bignum { font-size: 34px; margin: 0; }
   .cl-balancecard .cl-lbl { font-size: 11px; }
   .cl-period, .cl-tally, .cl-perweek { display: none; }
   .cl-close { padding-bottom: 120px; }
 }
 @media (max-width: 600px) {
-  .cl-wrap { padding: 0 16px; }
-  .cl-gate { padding: 22px 18px; }
+  .cl-gate, .cl-readout { padding: 22px 20px; }
+  .cl-gate .cl-cta { width: 100%; }
   .cl-gate-fields { grid-template-columns: 1fr; }
   .cl-line { flex-wrap: nowrap; }
   .cl-what { flex: 1 1 auto; min-width: 0; }
@@ -164,7 +161,7 @@
 
 @media print {
   .cl { background: #fff; color: #111; }
-  .cl .site-header, .cl-gate, .cl-print, .cl-cta { display: none; }
+  .cl .site-header, .cl-gate, .cl-print, .cl-cta, .cl-close .price-tag { display: none; }
   .cl-balance { position: static; }
   .cl input[type='number'] { border: 1px solid #999; background: #fff; color: #111; }
   .cl h1, .cl-num, .cl-entryhead h2, .cl-verdict h2, .cl-kicker, .cl-val, .cl-bignum, .cl-fig { color: #0b3a6a; }

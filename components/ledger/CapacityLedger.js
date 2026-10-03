@@ -1,7 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Logo from '@/components/Logo';
 import { trackClick } from '@/components/TrackEvent';
+import { CALL_PRICE } from '@/lib/config';
 import {
   LEDGER_DEFAULTS,
   CONDITION_NOTES,
@@ -134,7 +136,7 @@ export default function CapacityLedger() {
     <>
       <header className="cl-masthead">
         <div className="cl-wrap">
-          <div className="cl-eyebrow">A 90-day reckoning for founder-operators</div>
+          <div className="cl-eyebrow">A 90-day reckoning for founder‑operators</div>
           <h1>
             The Capacity
             <br />
@@ -259,7 +261,7 @@ export default function CapacityLedger() {
               </div>
             )}
 
-            <button type="button" className="cl-print" onClick={() => window.print()}>
+            <button type="button" className="btn btn-outline cl-print" onClick={() => window.print()}>
               Print or save your ledger as a PDF
             </button>
           </>
@@ -320,7 +322,7 @@ export default function CapacityLedger() {
             {errors.form && <p className="cl-error">{errors.form}</p>}
             {status === 'error' && <p className="cl-error">Something went wrong. Try again in a moment.</p>}
 
-            <button type="submit" className="cl-cta" disabled={status === 'submitting'}>
+            <button type="submit" className="btn btn-orange cl-cta" disabled={status === 'submitting'}>
               {status === 'submitting' ? 'Working it out…' : 'Show me my reading →'}
             </button>
           </form>
@@ -334,12 +336,24 @@ export default function CapacityLedger() {
           assumes an owner with capacity spare to install it, which is precisely what you no longer have. That is why
           the last three didn&rsquo;t stick.
         </p>
-        <p>Take the number to a 30-minute call. You&rsquo;ll leave with a read on your current state and one thing to change. No pitch.</p>
-        <a className="cl-cta" href="/call" onClick={() => trackClick('call_booked_click', { source: 'ledger' })}>
-          Book the 30-minute call
+        <p>
+          Take the number to a 30-minute Clarity Call with Keith. You&rsquo;ll leave with a read on your current
+          state and one thing to change. No pitch.
+        </p>
+        <div className="price-tag">
+          <span className="was">{CALL_PRICE.was}</span>
+          <span className="now">{CALL_PRICE.now}</span>
+        </div>
+        <a
+          className="btn btn-orange cl-cta"
+          href="/call"
+          onClick={() => trackClick('call_booked_click', { source: 'ledger' })}
+        >
+          Book Your Clarity Call &rarr;
         </a>
 
         <div className="cl-foot">
+          <Logo />
           <p className="cl-tag">Energy is revenue. Focus is profit. Capacity is your asset.</p>
           <p className="cl-smallprint">
             The Capacity Ledger is an estimating tool, not a financial audit. Your figures stay in your browser while
