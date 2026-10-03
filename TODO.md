@@ -57,6 +57,32 @@
 - Railway project `peaceful-mindfulness`: Postgres is provisioned and wired in
   (`DATABASE_URL`), along with `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID`, `NEXT_PUBLIC_SITE_URL`.
 
+## Capacity Ledger lead magnet (`/ledger`)
+
+Keith's standalone Capacity Ledger HTML page, ported into the app as a gated lead magnet.
+The ledger itself is open: anyone can fill in all five entries and watch the running total.
+The payoff is gated behind first name, email and consent: the verdict, the "what it would buy"
+lines, and the Entry 05 condition reading. Then a print/save-as-PDF button, and the CTA goes to
+`/call` (was `href="#"` in the original).
+
+- Calculation and reading copy live in `lib/ledger.js` (shared by the page and
+  `app/api/ledger/submit/route.js`, which recomputes from raw inputs rather than trusting the
+  browser). Page: `app/ledger/page.js` + `components/ledger/CapacityLedger.js`, styles scoped
+  under `.cl` in `app/ledger/ledger.css`.
+- Saved to its own `ledger_entries` table first (raw inputs as JSONB), then Beehiiv and GHL
+  best-effort, same as the guide. Beehiiv fields: `ledger_completed` (boolean),
+  `ledger_total_90`, `ledger_annual` (integer), `ledger_condition` (string:
+  `not_costed | holding | one_hot | reserves | empty`). GHL gets `source: 'capacity-ledger'`
+  plus `ledgerTotal90`, `ledgerAnnual`, `ledgerCondition` as extra webhook keys, which need
+  mapping in the GHL workflow.
+- Copy changes from the original, all deliberate: the "Nothing is sent anywhere" hint and the
+  "Figures stay in your browser" small print were no longer true once figures are saved, so both
+  were rewritten. The hourly-rate note said "across 13 weeks" but the maths divides by a 46-week
+  year, so the note now says that. Fixed a bug where a £0 total showed "£0 in 90 days. That is a
+  leak". Body font is Inter (the app's), not the original's DM Sans.
+- Still to do: no follow-up email sequence exists for ledger leads yet (trigger it in Beehiiv on
+  `ledger_completed`), and nothing links to `/ledger` from the homepage or results page yet.
+
 ## Scoring model
 
 Two axes, Energy and Focus, 8 questions each (Q1-16, alternating in that order in

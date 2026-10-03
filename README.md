@@ -17,7 +17,8 @@ first use, so any empty Postgres instance works — no separate migration step.
 
 ## Structure
 
-- `app/` — routes: `/` (landing), `/quiz`, `/results/[id]`, plus `api/quiz/submit` and `api/track`.
+- `app/` — routes: `/` (landing), `/quiz`, `/results/[id]`, `/guide`, `/call`, `/ledger` (the Capacity
+  Ledger lead magnet), plus the `api/` routes behind them.
 - `lib/config.js` — thresholds, pricing copy, external links. Edit here, not in components.
 - `lib/quizData.js` — all quiz copy: questions, headlines, insight blocks.
 - `lib/scoring.js` — pure scoring functions.
