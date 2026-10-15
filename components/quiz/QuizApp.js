@@ -7,6 +7,7 @@ import ProgressBar from './ProgressBar';
 import ContactStep from './ContactStep';
 import QuestionScreen from './QuestionScreen';
 import { ALL_QUESTIONS } from '@/lib/quizData';
+import { getAttribution } from '@/lib/attribution';
 
 const STEP_CONTACT = 'contact';
 
@@ -30,7 +31,7 @@ export default function QuizApp() {
       const res = await fetch('/api/quiz/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contact, answers: finalAnswers }),
+        body: JSON.stringify({ contact, answers: finalAnswers, attribution: getAttribution() }),
       });
       if (!res.ok) throw new Error('submit_failed');
       const data = await res.json();
