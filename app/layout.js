@@ -1,4 +1,5 @@
 import { Bebas_Neue, Inter } from 'next/font/google';
+import AttributionCapture from '@/components/AttributionCapture';
 import './globals.css';
 
 const bebas = Bebas_Neue({
@@ -26,7 +27,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${bebas.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AttributionCapture />
+        {children}
+      </body>
     </html>
   );
 }

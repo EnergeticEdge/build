@@ -57,6 +57,29 @@
 - Railway project `peaceful-mindfulness`: Postgres is provisioned and wired in
   (`DATABASE_URL`), along with `BEEHIIV_API_KEY`, `BEEHIIV_PUBLICATION_ID`, `NEXT_PUBLIC_SITE_URL`.
 
+## Lead source tracking
+
+Every quiz lead and guide download now records where the person came from (`lib/attribution.js`).
+Tag your links with `?src=` and the source shows up in three places: the `source` column in
+Postgres, a `lead_source` custom field in Beehiiv (created automatically on the next submission),
+and a `leadSource` field on the GHL webhook (plus `utmSource` / `utmMedium` / `utmCampaign`).
+
+Links to use (swap in the live domain):
+
+- Instagram bio: `/quiz?src=instagram-bio`
+- Instagram story link sticker: `/quiz?src=instagram-story`
+- LinkedIn posts or first comment: `/quiz?src=linkedin-post`
+- LinkedIn profile Featured section: `/quiz?src=linkedin-profile`
+- Beehiiv newsletter: `/quiz?src=newsletter`
+- Ads: `/quiz?src=meta-ad` (or the ad platform's own utm_* tags, which also work)
+
+Untagged clicks fall back to the referrer, which Instagram and LinkedIn's in-app browsers often
+strip, so they'll mostly show as `direct`. The tag is what makes it reliable.
+
+**Still to do in GHL:** the webhook now sends `leadSource`, but GHL only stores it once the
+inbound webhook workflow maps it to a contact field (create a custom field such as "Lead Source"
+and map `leadSource` to it). Until then it's in Postgres and Beehiiv only.
+
 ## Scoring model
 
 Two axes, Energy and Focus, 8 questions each (Q1-16, alternating in that order in

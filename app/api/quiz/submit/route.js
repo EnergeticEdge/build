@@ -4,6 +4,7 @@ import { insertLead, markBeehiivSynced, logEvent } from '@/lib/db';
 import { ensureCustomFields, upsertSubscriber, AUTOMATION_TRIGGER_FIELD } from '@/lib/beehiiv';
 import { sendToGHL } from '@/lib/ghl';
 import { SITE_URL } from '@/lib/config';
+import { normaliseAttribution } from '@/lib/attribution';
 import { REVENUE_QUESTION, OUTCOME_QUESTION, OBSTACLE_QUESTION, NOTES_QUESTION } from '@/lib/quizData';
 
 export async function POST(request) {
@@ -16,6 +17,7 @@ export async function POST(request) {
   }
 
   const { contact, answers } = body;
+  const { source, attribution } = normaliseAttribution(body.attribution);
   const scores = computeScores(answers);
   const state = scores.state;
 
@@ -42,6 +44,8 @@ export async function POST(request) {
       notes,
       marketingConsent: contact.marketingConsent,
       beehiivSynced: false,
+      source,
+      attribution,
     });
   } catch (err) {
     console.error('Failed to save lead to backup table:', err);
@@ -67,6 +71,7 @@ export async function POST(request) {
         notes,
         marketing_consent: 'true',
         results_url: `${SITE_URL}/results/${leadId}`,
+        lead_source: source,
         [AUTOMATION_TRIGGER_FIELD]: 'true',
       },
     });
@@ -87,12 +92,14 @@ export async function POST(request) {
       state,
       completedAt: new Date().toISOString(),
       source: 'feq-quiz',
+      leadSource: source,
+      attribution,
     });
   } catch (err) {
     console.error('GHL sync failed for lead', leadId, err.message);
   }
 
-  logEvent('quiz_complete', { leadId, state, score: scores.totalPct }).catch(() => {});
+  logEvent('quiz_complete', { leadId, state, score: scores.totalPct, source }).catch(() => {});
 
   return NextResponse.json({ id: leadId });
 }

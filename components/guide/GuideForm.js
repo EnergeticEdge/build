@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { trackClick } from '@/components/TrackEvent';
+import { getAttribution } from '@/lib/attribution';
 
 export default function GuideForm() {
   const [firstName, setFirstName] = useState('');
@@ -27,7 +28,12 @@ export default function GuideForm() {
       const res = await fetch('/api/guide/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName: firstName.trim(), email: email.trim(), marketingConsent }),
+        body: JSON.stringify({
+          firstName: firstName.trim(),
+          email: email.trim(),
+          marketingConsent,
+          attribution: getAttribution(),
+        }),
       });
       if (!res.ok) throw new Error('submit_failed');
       trackClick('guide_download_click');
